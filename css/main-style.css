@@ -134,3 +134,30 @@ a:hover{
 	display: block;
 	margin: auto;
 }
+.mobilenote{
+  display: none;
+}
+
+/***********************************
+
+  Mobile compatibility
+
+***********************************/
+
+@media screen and (max-width: 992px) {
+  #canvas{
+    display: none;
+  }
+  .mobilenote{
+    display: block;
+  }
+}
+
+
+/***********************************
+
+  Tablet compatibility
+
+***********************************/
+
+@media screen and (max-width: 992px) and (min-width: 601px) {

@@ -1,27 +1,24 @@
 <!DOCTYPE html>
-<html>
 <head>
-	<title>Andy Zhou - Game Enthusiast</title>
-	<link rel="stylesheet" type="text/css" href="css/main-style.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" type="text/css" href="/css/main-style.css">
+  <title>AndyRightNow - Tech Enthusiast</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,500">
+  <script src="js/lib/require.js"></script>
+  <script name="config">
+    requirejs.config({
+        baseUrl: 'js/lib',
+        paths: {
+            game: '../game/game.min',
+            jquery: 'https://code.jquery.com/jquery-2.2.4.min',
+            RandomBackgroundGenerator: 'RandomBackgroundGenerator.min'
+        }
+    });
+  </script>
+  <link href="css/main-style.min.css">
 </head>
-<body class="grayback">
-<div class="text-center paddingtb ">
-	<div class=" title paddingtb">ESL Suite Rocket Adventure Game (Demo)</div>
-<div class="subtitle ">Created By Andy Zhou</div>
-</div>
-<div class="text-center title mobilenote">Please Open it On Desktop</div>
-<canvas id="canvas" width="800" height="400"></canvas>
-<div class="text-center title paddingtb">
-	<span>Source Code:</span>
-	<a href="https://github.com/AndyRightNow/ESLSuiteGame">https://github.com/AndyRightNow/ESLSuiteGame</a>
-</div>
+<body>
+  <div>hello</div>
 </body>
 <footer>
-	<script type="text/javascript" src="js/main.js"></script>
-	<script type="text/javascript" src="js/Game.js"></script>
+  <script src="js/main.js"></script>
 </footer>
-</html>

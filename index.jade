@@ -6,6 +6,7 @@ head
     meta(
         name="viewport",
         content="width=device-width, initial-scale=1")
+    link(href = "css/css-resets.min.css", rel="stylesheet")
     link(href = "https://fonts.googleapis.com/css?family=Roboto:400,300,500")
     script(src="js/lib/require.js")
     script(name="config"). 
@@ -19,6 +20,29 @@ head
                             });
     link(href = "css/main-style.min.css", rel="stylesheet")
 body
-     canvas#canvas(style="background-color: #e0e0e0;")
+    canvas#canvas
+    section#index
+        .inner-window.width50
+            .inner-window-head
+            .inner-window-content.padding2.text-center
+                h2.paddingtb4.
+                                I am Andy Zhou, a college student 
+                                and a developer
+                nav.text-center.paddingtb2
+                    a.scroll-link(href="#about")
+                        .menu-item.border-bottom About Me
+                    a.scroll-link(href="#projects")
+                        .menu-item.border-bottom Projects
+                    a.scroll-link(href="#contact")
+                        .menu-item Contact
+    section#about
+        .inner-window.width70
+            .inner-window-head
+            .inner-window-content.padding2.overflow-hidden.height70vh
+                div
+                    h2.paddingtb2.text-center About Me
+                    div test
+    section#projects
+    section#contact
 footer
     script(src="js/main.js")

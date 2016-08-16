@@ -20,4 +20,14 @@ function($, RandomBackgroundGenerator, canvasResizer, __, __){
             background.generate();
         }
     });
+
+    //--------------------------------
+    //  Toggle side nav
+    //--------------------------------
+    $('.side-nav-btn, .side-nav .menu-item').click(function(event){
+        if ($(this).text() === 'Index' || $(this).hasClass('side-nav-btn')) {
+            $('.side-nav').toggleClass('side-nav-out');
+            $('.side-nav-btn').toggleClass('side-nav-btn-out');
+        }
+    });
 });

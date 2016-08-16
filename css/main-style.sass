@@ -1,6 +1,10 @@
 //  Variables
 $blue: #4183D7
 
+=paddingtb($num)
+    padding-top: $num
+    padding-bottom: $num
+
 //  Functions
 =transform($prop)
     -webkit-transform: $prop
@@ -57,29 +61,70 @@ a
 .text-center
     text-align: center
 .paddingtb2
-    padding-top: 2%
-    padding-bottom: 2%
+    +paddingtb(2%)
 .paddingtb4
-    padding-top: 4%
-    padding-bottom: 4%
+    +paddingtb(4%)
+.paddingtb6
+    +paddingtb(6%)
 .margin-auto
     margin-left: auto
     margin-right: auto
-
 .overflow-hidden
     overflow: hidden
-
 .overflow-wrap
     word-wrap: break-word
     -webkit-word-wrap: break-word
     -moz-word-wrap: break-word
     -o-word-wrap: break-word
     -ms-word-wrap: break-word
+//  White text blue background
+.wtbb
+    color: white
+    background-color: $blue
+.box-shadow
+    box-shadow: 0px 5px 21px 1px rgba(0, 0, 0, 0.30)
+
+.side-nav,
+#canvas,
+.side-nav-btn
+    position: fixed
 
 #canvas
     display: block
     z-index: -1
-    position: fixed
+
+.side-nav-btn,
+.side-nav
+    z-index: 100
+    right: 0
+    top: 50%
+    +transform(translate(0%, -50%))
+    +transition(.3s, ease-in-out)
+
+.side-nav
+    +transform(translate(100%, -50%))
+
+.side-nav-btn
+    @extend .box-shadow
+    +border-radius(50%)
+    background-color: white
+    width: 2.3em
+    height: 2.3em
+    font-size: 20px
+    right: 2%
+    cursor: pointer
+
+    &:hover
+        @extend .wtbb
+
+    i
+        margin-top: 50%
+        +transform(translateY(-50%))
+
+.side-nav-out
+    +transform(translate(0%, -50%))
+.side-nav-btn-out
+    +transform(translate(0%, -300%) rotate(360deg))
 
 section
     position: relative
@@ -93,23 +138,23 @@ section
         width: 1px
 
 .menu-item
-    @extend .padding2, .margin-auto
+    @extend .paddingtb2, .margin-auto
     width: 10em
     align-self: center
+    background-color: white
     +border-radius(3px)
     +transition(0.3s, ease-in-out)
 
     &:hover
-        color: white
-        background-color: $blue
+        @extend .wtbb
 
 .inner-window
+    @extend .box-shadow
     left: 50%
     top: 50%
     +transform(translate(-50%, -50%))
     +border-radius(2px)
     background-color: white
-    box-shadow: 0px 5px 21px 1px rgba(0, 0, 0, 0.30)
 
 .inner-window-head
     +border-radius(2px 2px 0px 0px)

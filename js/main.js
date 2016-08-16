@@ -1,3 +1,3 @@
-require(['jquery'], function($){
-    console.log($);
+require(['jquery', 'RandomBackgroundGenerator', 'canvasResizer'],
+        function($, RandomBackgroundGenerator, canvasResizer){
 });

@@ -1,5 +1,6 @@
-require(['jquery', 'RandomBackgroundGenerator', 'canvasResizer', 'scroll_link'],
-function($, RandomBackgroundGenerator, canvasResizer, youarenotgonnausethis){
+require(['jquery', 'RandomBackgroundGenerator', 'canvasResizer', 'scroll_link',
+        'SCSC'],
+function($, RandomBackgroundGenerator, canvasResizer, __, __){
     var CANVAS_ID = 'canvas';
     var canvas = document.getElementById(CANVAS_ID);
 

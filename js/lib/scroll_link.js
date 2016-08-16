@@ -1,7 +1,15 @@
+/*
+ *
+ *  Scroll to internal link
+ *
+ *  Usage:
+ *
+ *  Add CSS Class "scroll-link"
+ *  (case sensitive) to the HTML element
+ *  you want to animate.
+ *
+ */
 define(['jquery'], function($){
-    //---------------------------------
-    //  Scroll to internal link
-    //---------------------------------
     return (function(){
         var ANIMATE_TIME = 600;
 

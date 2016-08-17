@@ -1,9 +1,14 @@
 //  Variables
 $blue: #4183D7
+$grayorange: #F4B350
+$orange: #F89406
 
 =paddingtb($num)
     padding-top: $num
     padding-bottom: $num
+=paddinglr($num)
+    padding-left: $num
+    padding-right: $num
 
 //  Functions
 =transform($prop)
@@ -39,14 +44,18 @@ html, body
     overflow: hidden
     font-family: 'Roboto', sans-serif
     font-size: 1em
+
 a
+    color: $orange
+    +transition(.3s, ease-in-out)
     text-decoration: none
-    color: inherit
+
     &:hover
-        text-decoration: none
-        color: inherit
+        color: $grayorange
 
 //  Basics
+em, strong
+    color: $blue
 .width50
     width: 50%
 .width70
@@ -60,12 +69,18 @@ a
     padding: 2%
 .text-center
     text-align: center
+.text-left
+    text-align: left
 .paddingtb2
     +paddingtb(2%)
+.paddingtb1
+    +paddingtb(1%)
 .paddingtb4
     +paddingtb(4%)
 .paddingtb6
     +paddingtb(6%)
+.paddinglr10
+    +paddinglr(10%)
 .margin-auto
     margin-left: auto
     margin-right: auto
@@ -77,6 +92,8 @@ a
     -moz-word-wrap: break-word
     -o-word-wrap: break-word
     -ms-word-wrap: break-word
+.none
+    display: none
 //  White text blue background
 .wtbb
     color: white
@@ -131,6 +148,14 @@ section
     width: 100%
     height: 100vh
 
+nav
+    a
+        text-decoration: none
+        color: inherit
+        &:hover
+            text-decoration: none
+            color: inherit
+
 .border-bottom
     border-bottom:
         style: solid
@@ -170,3 +195,15 @@ section
         color: white
         font-size: 18px
         padding-left: 10px
+
+.inner-window-content
+    @extend .paddingtb2, .paddinglr10
+
+.box-title
+    font-size: 1.3em
+    background-color: #eeeeee
+    padding: 10px
+
+#game-canvas
+    position: relative
+    left: -3%

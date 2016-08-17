@@ -13,7 +13,7 @@ head
                             requirejs.config({
                                 baseUrl: 'js/lib',
                                 paths: {
-                                    game: '../game/game.min',
+                                    Game: '../game/game.min',
                                     jquery: 'https://code.jquery.com/jquery-2.2.4.min',
                                     RandomBackgroundGenerator: 'RandomBackgroundGenerator.min'
                                 }
@@ -22,6 +22,11 @@ head
     link(href = "css/scsc.min.css", rel="stylesheet")
     link(href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css", rel="stylesheet")
 body
+    //- Mixins
+    mixin titleBox(title)
+        .paddingtb4
+            span.box-title= title
+
     canvas#canvas
     nav
         .side-nav-btn.text-center
@@ -38,7 +43,7 @@ body
     section#home
         .inner-window.width50
             .inner-window-head
-            .inner-window-content.padding2.text-center
+            .inner-window-content.text-center
                 h3.paddingtb4.
                                 I am Andy Zhou, a college student 
                                 and a self-taught developer
@@ -52,21 +57,91 @@ body
     section#about
         .inner-window.width70.scsc-container
             .inner-window-head
-            .inner-window-content.padding2.overflow-hidden.height70vh
+            .inner-window-content.overflow-hidden.height70vh
                 div.scsc-content.overflow-wrap
                     h2.paddingtb2.text-center About Me
-                    div Test
+                    article.text-center
+                        +titleBox('Introduction')
+                        .paddingtb2. 
+                                    My name is Andy Zhou. I am a self-taught developer 
+                                    and a senior college student. I have experience in web front-end
+                                    languages(<em>HTML</em>, <em>CSS</em>, <em>JavaScript</em>), development 
+                                    tools(<em>webpack</em>, <em>gulp</em>, <em>git</em>, <em>sass</em>, <em>jade</em>) 
+                                    and test frameworks(<em>jasmine</em>). I also have experience in <em>C++</em>, 
+                                    <em>Cocos2d-x</em>, <em>Box2d</em> and <em>DirectX 3D</em>.
+                        +titleBox('Work Experience')
+                        .paddingtb2.
+                                    I have been working as a <strong>front-end developer</strong> in <a href="https://www.eslsuite.com" target='_blank'>ESL Suite</a>(as the only 
+                                    front-end developer in the company), responsible for designing, implementing and maintaining the company website.
+                        +titleBox('Project Experience')
+                        .paddingtb2.
+                                    I love doing projects but concerning my school and my major, I don't have many chances to work with others(which is definitely important), 
+                                    all my projects, except for dependencies, are finished by myself alone.
+                        .paddingtb2.
+                                    More details, check out <a href='#projects' class='scroll-link'>my projects</a>.           
+                        +titleBox('How I Learn To Code')
+                        .paddingtb2. 
+                                    I started to learn to code around 1 and a half years ago and I started from <em>C++</em>, 
+                                    <em>Data Structure and Algorithm</em> and some Math(Linear Algebra, etc.). I always think having a <strong>solid foundation in Computer Science</strong> 
+                                    can help you so much more when you proceed to learn new things and it turns out that my thought is right for
+                                    now or even the future.
+                        .paddingtb2. 
+                                    However, 1 and a half years is pretty short, at least too enough for me to grasp the whole package of fundamental CS.
+                                    So far, I have only learned: 
+                        .width50.margin-auto.text-left
+                            ul
+                                li Basic and intermediate <em>C++</em>
+                                li Basic and intermediate <em>Data Structure and Algorithm</em>
+                                li Basic <em>Computer Systems</em>
+                                li Basic <em>Computer Graphics</em>
+                                li Basic and intermediate <em>HTML</em>, <em>CSS</em> and <em>JavaScript</em>
+                                li Basic and intermediate Software Engineering practices
+                                li Basic development tools(<em>webpack</em>, <em>gulp</em>, <em>git</em>, etc.)
+                        .paddingtb2 What I will be learning next:
+                        .width50.margin-auto.text-left
+                            ul
+                                li Computer Networks
+                                li More Computer Systems
+                                li Advanced topics
+                                li Compiler Theory
+                                li ...and much more
+                        .paddingtb2.
+                                    Here is my blog where I keep track of my learning progress and most of my problem 
+                                    solving experience(pratices on Data Structure and Algorithm): 
+                                    <a href='https://andyrightnow.blogspot.com' target='_blank'>Andyrightnow.blogspot.com</a>
+                                          
     section#projects
         .inner-window.width70.scsc-container
             .inner-window-head
-            .inner-window-content.padding2.overflow-hidden.height70vh
+            .inner-window-content.overflow-hidden.height70vh
                 div.scsc-content.overflow-wrap
                     h2.paddingtb2.text-center Projects
-                    div Test
+                    article.text-center
+                        +titleBox('Overview')
+                        .paddingtb2. 
+                                    Most of my projects are written in <em>JavaScript</em> 
+                                    and a small part of them is written is <em>C++</em>. I write <em>C++</em>
+                                    mostly when I do problem solving(<a href="http://patest.cn" target='_blank'>PAT</a>, <a href="http://codeforces.com/" target='_blank'>codeforce</a>, etc.) 
+                        +titleBox('Random Canvas Background Generator')
+                        .paddingtb1.
+                                    <strong>Project Page:</strong> <a href="https://github.com/AndyRightNow/Random-Canvas-Background-Generator" target='_blank'>Github</a>
+                        .paddingtb1.
+                                    <strong>Project Introduction:</strong><br><br> A JavaScript plugin to generate random 
+                                    background for HTML canvas in a certain mode.
+                        .paddingtb1.
+                                    <strong>Example:</strong><br><br> The background of this website you are looking at and try to click around to have fun :).
+                        +titleBox('A Simple JavaScript Game Engine')
+                        .paddingtb1.
+                                    <strong>Project Page:</strong> <a href="https://github.com/AndyRightNow/ESLSuiteGame" target='_blank'>Github</a>
+                        .paddingtb1.
+                                    <strong>Project Introduction:</strong><br><br> A simple game engine written in JavaScript 
+                                    and a simple game written out of it. Plus it's a game put on ESL Suite's 404 page and used to kill time for users who are directed to 404 page accidentally.
+                        .paddingtb1 <strong>Example:</strong><br><br> <a href='#projects' class="play-game">Play it!</a>
+                        canvas#game-canvas.none
     section#contact
         .inner-window.width50
             .inner-window-head
-            .inner-window-content.padding2.overflow-hidden
+            .inner-window-content.overflow-hidden
                 h2.paddingtb2.text-center Contact
                 div Test
 footer

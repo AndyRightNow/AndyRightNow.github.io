@@ -7,6 +7,7 @@ define(function(){
         var canvasResizer = {
             _canvasList: [],
             _sizes: {},
+            _callbacks: {},
             /*
              * Add resize listener for the canvas with specific size
              * Every time the browser resize, the canvas will change to its specific size
@@ -15,7 +16,7 @@ define(function(){
              * @param {Number} width, height: Non-negative number that is the percentage
              *                                of the viewport. They are 1 by default.
              */
-            addResizer: function(canvasId, width, height) {
+            addResizer: function(canvasId, width, height, callback) {
                 width = width || 1;
                 height = height || 1;
 
@@ -29,6 +30,16 @@ define(function(){
 
                     this._canvasList.push(canvas);
                 }
+            },
+
+            /*
+             * Add callback for this resizer(when the resizer is done)
+             *
+             * @param {String} canvasId: The id of the canvas
+             * @param {Function} callback: The function to execute after resizing
+             */
+            addResizerCallback: function(canvasId, callback) {
+                this._callbacks[canvasId] = callback;
             }
         };
 
@@ -36,6 +47,8 @@ define(function(){
             canvasResizer._canvasList.forEach(function(ele){
                 ele.width = window.innerWidth * canvasResizer._sizes[ele.id].width;
                 ele.height = window.innerHeight * canvasResizer._sizes[ele.id].height;
+                if (typeof canvasResizer._callbacks[ele.id] === 'function')
+                    canvasResizer._callbacks[ele.id]();
             });
         });
 

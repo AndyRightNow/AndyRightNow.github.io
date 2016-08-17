@@ -41,9 +41,9 @@ define(['jquery'], function($){
 
         //  Translation distance for every content
         var contentTranslations = [];
+        var originalContentTop = [];
         //  Translation range lower bound for every content
         var rangeLow = [];
-        var originalContentTop;
 
         $('html').on('mousewheel', function(event){
             //----------------------------------
@@ -63,11 +63,20 @@ define(['jquery'], function($){
 
                 var contentBottom = thisContent.offset().top + thisContent.height();
 
+                //----------------------------------
+                //  Remember the original top bound
+                //  of the content for only once
+                //----------------------------------
                 if (typeof rangeLow[index] === 'undefined') {
-                    originalContentTop = thisContent.offset().top;
+                    originalContentTop[index] = thisContent.offset().top;
                 }
 
-                rangeLow[index] = originalContentTop + thisContent.height() - (containerBottom - thisContainer.height() / 7);
+                //--------------------------------------
+                //  Contantly update the scroll
+                //  range depending on the height
+                //  of the content
+                //--------------------------------------
+                rangeLow[index] = originalContentTop[index] + thisContent.height() - (containerBottom - thisContainer.height() / 7);
                 rangeLow[index] = rangeLow[index] < 0 ? 0 : -rangeLow[index];
 
                 if (containerTop >= windowTop && containerBottom <= windowBotoom) {

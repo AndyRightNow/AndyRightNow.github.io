@@ -26,6 +26,9 @@ body
     mixin titleBox(title)
         .paddingtb4
             span.box-title= title
+            
+    mixin link(link, name)
+        a(href=link, target='_blank')= name
 
     canvas#canvas
     nav
@@ -138,11 +141,39 @@ body
                                     and a simple game written out of it. Plus it's a game put on ESL Suite's 404 page and used to kill time for users who are directed to 404 page accidentally.
                         .paddingtb1 <strong>Example:</strong><br><br> <a href='#projects' class="play-game">Play it!</a>
                         canvas#game-canvas.none
+                        +titleBox('Physics-based Skeletal Character for Cocos2d-x')
+                        .paddingtb1.
+                                    <strong>Project Page:</strong> <a href="https://github.com/AndyRightNow/SkeletalCharacter-cocos2dx" target='_blank'>Github</a>
+                        .paddingtb1.
+                                    <strong>Project Introduction:</strong><br><br> A physics-based skeletal character for Cocos2d-x using Box2d as the physics library.
+                        .paddingtb1.
+                                    <strong>Example:</strong><br><br> Working on it...
+                        +titleBox('ESL Suite Front-end Framework')
+                        .paddingtb1.
+                                    <strong>Project Page:</strong> <a href="https://github.com/AndyRightNow/ESLSuiteFramework" target='_blank'>Github</a>
+                        .paddingtb1.
+                                    <strong>Project Introduction:</strong><br><br>A Bootstrap and jQuery wrap-around styling and animation framework. 
+                                    It implements some widgets and animation effects such as slideshows, scroll-to-show fade-in and scale-in effects, 
+                                    pop-out windows, auto-adapt elements and etc., which you can directly drop CSS classes in your elements to use.
+                        .paddingtb1.
+                                    <strong>Example:</strong><br><br> <a href='http://www.eslsuite.com' target='_blank'>ESL Suite Website</a>
     section#contact
         .inner-window.width50
             .inner-window-head
             .inner-window-content.overflow-hidden
                 h2.paddingtb2.text-center Contact
-                div Test
+                article.text-center
+                    .paddingtb1 E-mail: 
+                        +link('mailto:naruto199507@gmail.com', 'naruto199507@gmail.com')
+                    .paddingtb1 Github: 
+                        +link('https://github.com/AndyRightNow/', 'AndyRightNow')
+                    .paddingtb1 Blog: 
+                        +link('https://andyrightnow.blogspot.com', 'AndyRightNow')
+                    .paddingtb1 Twitter: 
+                        +link('https://twitter.com/Zhouandi', '@Zhouandi')
+                    .paddingtb1 Instagram: 
+                        +link('https://www.instagram.com/zhouandi/', '@zhouandi')
+                    .paddingtb1 Weibo: 
+                        +link('https://weibo.com/naruto950726', 'AndyRightNow')
 footer
     script(src="js/main.js")

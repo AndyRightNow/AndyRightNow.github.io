@@ -45,8 +45,13 @@ define(function(){
 
         window.addEventListener('resize', function(e){
             canvasResizer._canvasList.forEach(function(ele){
+                //------------------------------
+                //  Resize the canvas
+                //------------------------------
                 ele.width = window.innerWidth * canvasResizer._sizes[ele.id].width;
                 ele.height = window.innerHeight * canvasResizer._sizes[ele.id].height;
+
+                //  Call callbacks
                 if (typeof canvasResizer._callbacks[ele.id] === 'function')
                     canvasResizer._callbacks[ele.id]();
             });

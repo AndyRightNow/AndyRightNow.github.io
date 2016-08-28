@@ -12,8 +12,11 @@ function($, RandomBackgroundGenerator, canvasResizer, __, __, Game){
     //----------------------------------
     //  Click to generate random background
     //----------------------------------
-    var background = new RandomBackgroundGenerator(CANVAS_ID, 'Polygonal',
-        '#4183d7', '#26A65B', '#663399');
+    var background = new RandomBackgroundGenerator({
+        canvasId: CANVAS_ID,
+        mode: 'Polygonal',
+        baseColors: ['#4183d7', '#26A65B', '#663399']
+    });
     background.getMode().setDensity(0.8);
     background.generate();
     background.enabled = true;

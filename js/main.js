@@ -15,13 +15,15 @@ function($, RandomBackgroundGenerator, canvasResizer, __, __, Game){
     var background = new RandomBackgroundGenerator({
         canvasId: CANVAS_ID,
         mode: 'Polygonal',
-        baseColors: ['#4183d7', '#26A65B', '#663399']
+        baseColors: ['#4183d7', '#26A65B', '#663399'],
+        density: {
+            x: 0.7, y: 0.7
+        },
+        isMixed: false
     });
-    background.getMode().setDensity(0.8);
     background.generate();
-    background.enabled = true;
     document.addEventListener('click', function(event){
-        if (event.target.tagName === 'SECTION' && background.enabled) {
+        if (event.target.tagName === 'SECTION') {
             background.generate();
         }
     });

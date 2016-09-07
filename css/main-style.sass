@@ -4,8 +4,8 @@ $grayorange: #F4B350
 $orange: #F89406
 
 =paddingtb($num)
-    padding-top: $num
     padding-bottom: $num
+    padding-top: $num
 =paddinglr($num)
     padding-left: $num
     padding-right: $num
@@ -19,11 +19,11 @@ $orange: #F89406
     transform: $prop
 
 =border-radius($radius)
-  -webkit-border-radius: $radius
-  -moz-border-radius:    $radius
-  -ms-border-radius:     $radius
-  -o-border-radius:      $radius
-  border-radius:         $radius
+    -moz-border-radius:    $radius
+    -ms-border-radius:     $radius
+    -webkit-border-radius: $radius
+    -o-border-radius:      $radius
+    border-radius:         $radius
 
 =transition($time, $effect)
     -webkit-transition: all $time $effect
@@ -60,6 +60,8 @@ em, strong
     width: 50%
 .width70
     width: 70%
+.width60
+    width: 60%
 .height70vh
     height: 70vh
 .absolute,
@@ -141,7 +143,7 @@ em, strong
 .side-nav-out
     +transform(translate(0%, -50%))
 .side-nav-btn-out
-    +transform(translate(0%, -300%) rotate(360deg))
+    +transform(translate(-350%, -50%) rotate(360deg))
 
 section
     position: relative

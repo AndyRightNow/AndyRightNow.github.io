@@ -76,7 +76,7 @@ define(['jquery'], function($){
                 //  range depending on the height
                 //  of the content
                 //--------------------------------------
-                rangeLow[index] = originalContentTop[index] + thisContent.height() - (containerBottom - thisContainer.height() / 7);
+                rangeLow[index] = originalContentTop[index] + thisContent.height() - (containerBottom - thisContainer.height() / 5);
                 rangeLow[index] = rangeLow[index] < 0 ? 0 : -rangeLow[index];
 
                 if (containerTop >= windowTop && containerBottom <= windowBotoom) {

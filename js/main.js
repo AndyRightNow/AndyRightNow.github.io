@@ -1,6 +1,5 @@
-require(['jquery', 'RandomBackgroundGenerator', 'canvasResizer', 'scroll_link',
-    'SCSC', 'Game'
-], function($, RandomBackgroundGenerator, canvasResizer, __, __, Game) {
+require(['jquery', 'RandomBackgroundGenerator', 'canvasResizer', 'scroll_link', 'Game'
+], function($, RandomBackgroundGenerator, canvasResizer, __, Game) {
     var CANVAS_ID = 'canvas';
     var GAME_CANVAS_ID = 'game-canvas';
     var canvas = document.getElementById(CANVAS_ID);

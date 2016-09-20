@@ -81,6 +81,8 @@ em, strong
     +paddingtb(4%)
 .paddingtb6
     +paddingtb(6%)
+.paddinglr1
+    +paddinglr(1%)
 .paddinglr10
     +paddinglr(10%)
 .margin-auto
@@ -208,4 +210,29 @@ nav
 
 #game-canvas
     position: relative
-    left: -3%
+    left: -5%
+
+.scrollable
+    overflow-x: hidden
+    overflow-y: scroll
+
+.scrollable::-webkit-scrollbar
+    width: 9px
+
+.scrollable::-webkit-scrollbar-track
+    border-radius: 10px
+    border-style: solid
+    border-width: 0.5px
+    border-color: white
+
+.scrollable::-webkit-scrollbar-track:hover
+    border-color: lightgray
+
+
+.scrollable::-webkit-scrollbar-thumb
+    border-radius: 10px
+    background-color: rgba(0, 0, 0, 0.1)
+
+
+.scrollable::-webkit-scrollbar-thumb:hover
+    background-color: lightgray

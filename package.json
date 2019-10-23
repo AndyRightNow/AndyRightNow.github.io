@@ -1,0 +1,25 @@
+{
+  "name": "andyrightnow.github.io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndyRightNow/AndyRightNow.github.io.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AndyRightNow/AndyRightNow.github.io/issues"
+  },
+  "homepage": "https://github.com/AndyRightNow/AndyRightNow.github.io#readme",
+  "devDependencies": {
+    "cuttlebelle": "^1.0.0-alpha.67"
+  },
+  "cuttlebelle": {
+    "folder": {
+      "site": "./site"
+    }
+  }
+}

@@ -1,52 +1,46 @@
 ---
-import { readOne, readAll } from "../../lib/markdoc/read";
-import { blog } from "../../lib/markdoc/frontmatter.schema";
-import Renderer from "../../components/Renderer.astro";
-import BlogPostMeta from "../../components/BlogPostMeta.astro";
-import ContentLayout from "../../layouts/ContentLayout.astro";
-import { SITE_URL } from "../../config";
+import BlogPostMeta from '../../components/BlogPostMeta.astro'
+import ContentLayout from '../../layouts/ContentLayout.astro'
+import { SITE_URL } from '../../config'
+import { getEntry, getCollection, render } from 'astro:content'
 
 export async function getStaticPaths() {
-  const posts = await readAll({
-    directory: "blog",
-    frontmatterSchema: blog,
-  });
-
-  // we don't want to generate pages for posts that link to external websites
-  const filteredPosts = posts
-    .filter((p) => p.frontmatter.draft !== true)
-    .filter(({ frontmatter }) => !frontmatter.external);
-
-  return filteredPosts.map((post) => {
-    return { params: { slug: post.slug } };
-  });
+  const blogPosts = await getCollection('blog', ({ data }) => {
+    return !data.draft && !data.external
+  })
+  return blogPosts.map((post) => {
+    return { params: { slug: post.id } }
+  })
 }
 
-const { slug } = Astro.params;
-if (typeof slug !== "string") {
-  throw Error(`slug should be string. Received: ${slug}`);
+const { slug } = Astro.params
+
+if (typeof slug !== 'string') {
+  throw Error(`slug should be string. Received: ${slug}`)
 }
 
-const { content, frontmatter } = await readOne({
-  directory: "blog",
-  slug,
-  frontmatterSchema: blog,
-});
+const entry = await getEntry('blog', slug)
+
+if (!entry) {
+  throw Error(`Invalid URL: ${slug}`)
+}
+
+const { Content } = await render(entry)
 
 const ogImageAbsoluteUrl =
-  frontmatter.external !== true && frontmatter.ogImagePath
-    ? new URL(frontmatter.ogImagePath, SITE_URL).toString()
-    : undefined;
+  entry?.data.external !== true && entry?.data.ogImagePath
+    ? new URL(entry?.data.ogImagePath, SITE_URL).toString()
+    : undefined
 ---
 
-<ContentLayout title={frontmatter.title} date={frontmatter.date}>
+<ContentLayout title={entry?.data.title} date={entry?.data.date}>
   <BlogPostMeta
-    title={frontmatter.title}
-    description={frontmatter.external ? undefined : frontmatter.description}
-    publishDate={frontmatter.date.toISOString()}
+    title={entry?.data.title}
+    description={entry?.data && 'description' in entry?.data ? entry?.data.description : undefined}
+    publishDate={entry?.data.date.toISOString()}
     pagePath={`/blog/${slug}`}
-    ogImageAbsoluteUrl={ogImageAbsoluteUrl}
+    ogImageAbsoluteUrl={ogImageAbsoluteUrl as string}
     slot="meta"
   />
-  <Renderer content={content} slot="content" />
+  <Content slot="content" />
 </ContentLayout>

@@ -1,22 +1,14 @@
 ---
-import { readAll } from "../lib/markdoc/read";
-import { blog } from "../lib/markdoc/frontmatter.schema";
-import PageLayout from "../layouts/PageLayout.astro";
-import PageMeta from "../components/PageMeta.astro";
-import { SITE_TITLE } from "../config";
+import PageLayout from '../layouts/PageLayout.astro'
+import PageMeta from '../components/PageMeta.astro'
+import { SITE_TITLE } from '../config'
+import { getCollection } from 'astro:content'
 
-const posts = await readAll({
-  directory: "blog",
-  frontmatterSchema: blog,
-});
+const posts = await getCollection('blog')
 
 const sortedPosts = posts
-  .filter((p) => p.frontmatter.draft !== true)
-  .sort(
-    (a, b) =>
-      new Date(b.frontmatter.date).valueOf() -
-      new Date(a.frontmatter.date).valueOf()
-  );
+  .filter((p) => p.data.draft !== true)
+  .sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf())
 ---
 
 <PageLayout>
@@ -25,19 +17,17 @@ const sortedPosts = posts
     <ul>
       {
         sortedPosts.map((post) => {
-          const formattedDate = new Date(
-            post.frontmatter.date
-          ).toLocaleDateString("en-us", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-          });
+          const formattedDate = new Date(post.data.date).toLocaleDateString('en-us', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          })
           return (
             <li class="grid grid-cols-[1fr] md:grid-cols-[1fr_auto] mb-3 md:gap-2 items-start">
               <div class="title">
-                {post.frontmatter.external ? (
+                {post.data.external ? (
                   <a
-                    href={post.frontmatter.url}
+                    href={post.data.url}
                     target="_blank"
                     class="unset
                         transition-[background-size] duration-300 
@@ -46,14 +36,14 @@ const sortedPosts = posts
                         from-primary-blue to-primary-blue dark:from-primary-blue dark:to-primary-blue
                       "
                   >
-                    <span>{post.frontmatter.title}</span>
+                    <span>{post.data.title}</span>
                     <span>
                       <i class="ml-1 mr-1 text-[12px] pb-2 fa-solid fa-up-right-from-square" />
                     </span>
                   </a>
                 ) : (
                   <a
-                    href={`/blog/${post.slug}`}
+                    href={`/blog/${post.id}`}
                     class="unset
                         transition-[background-size] duration-300 
                         bg-gradient-to-r bg-left-bottom bg-no-repeat
@@ -61,17 +51,15 @@ const sortedPosts = posts
                         from-primary-blue to-primary-blue dark:from-primary-blue dark:to-primary-blue
                       "
                   >
-                    {post.frontmatter.title}
+                    {post.data.title}
                   </a>
                 )}
               </div>
               <div class="text-text-muted text-sm italic pt-1">
-                <time datetime={post.frontmatter.date.toISOString()}>
-                  {formattedDate}
-                </time>
+                <time datetime={post.data.date.toISOString()}>{formattedDate}</time>
               </div>
             </li>
-          );
+          )
         })
       }
     </ul>

@@ -1,25 +1,34 @@
 {
-  "name": "andyrightnow.github.io",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.html",
-  "scripts": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AndyRightNow/AndyRightNow.github.io.git"
+  "name": "blogster-bubblegum",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "clean": "rm -rf dist"
   },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/AndyRightNow/AndyRightNow.github.io/issues"
+  "dependencies": {
+    "@astrojs/prism": "^3.2.0",
+    "@astrojs/rss": "^4.0.10",
+    "@astrojs/sitemap": "^3.2.1",
+    "@astrojs/tailwind": "^5.1.3",
+    "@markdoc/markdoc": "^0.4.0",
+    "@tailwindcss/typography": "^0.5.15",
+    "astro": "^5.0.3",
+    "astro-markdoc-renderer": "0.0.1-alpha.1",
+    "globby": "^14.0.2",
+    "gray-matter": "^4.0.3",
+    "slugify": "^1.6.6",
+    "tailwindcss": "^3.4.16",
+    "zod": "^3.23.8"
   },
-  "homepage": "https://github.com/AndyRightNow/AndyRightNow.github.io#readme",
   "devDependencies": {
-    "cuttlebelle": "^1.0.0-alpha.67"
-  },
-  "cuttlebelle": {
-    "folder": {
-      "site": "./site"
-    }
+    "prettier": "^3.4.2",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-astro-organize-imports": "^0.4.11",
+    "typescript": "^5.7.2"
   }
 }

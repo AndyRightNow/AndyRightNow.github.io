@@ -1,57 +1,49 @@
-import rss from "@astrojs/rss";
-import { blog } from "../frontmatter.schema";
-import { readAll } from "../lib/markdoc/read";
-import { SITE_TITLE, SITE_DESCRIPTION, SITE_URL } from "../config";
+import rss from '@astrojs/rss'
+import { SITE_TITLE, SITE_DESCRIPTION, SITE_URL } from '../config'
+import { getCollection } from 'astro:content'
 
 export const get = async () => {
-  const posts = await readAll({
-    directory: "blog",
-    frontmatterSchema: blog,
-  });
+  const posts = await getCollection('blog')
 
   const sortedPosts = posts
-    .filter((p) => p.frontmatter.draft !== true)
-    .sort(
-      (a, b) =>
-        new Date(b.frontmatter.date).valueOf() -
-        new Date(a.frontmatter.date).valueOf()
-    );
+    .filter((p) => p.data.draft !== true)
+    .sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf())
 
-  let baseUrl = SITE_URL;
+  let baseUrl = SITE_URL
   // removing trailing slash if found
   // https://example.com/ => https://example.com
-  baseUrl = baseUrl.replace(/\/+$/g, "");
+  baseUrl = baseUrl.replace(/\/+$/g, '')
 
-  const rssItems = sortedPosts.map(({ frontmatter, slug }) => {
-    if (frontmatter.external) {
-      const title = frontmatter.title;
-      const pubDate = frontmatter.date;
-      const link = frontmatter.url;
+  const rssItems = sortedPosts.map(({ data, id }) => {
+    if (data.external) {
+      const title = data.title
+      const pubDate = data.date
+      const link = data.url
 
       return {
         title,
         pubDate,
         link,
-      };
+      }
     }
 
-    const title = frontmatter.title;
-    const pubDate = frontmatter.date;
-    const description = frontmatter.description;
-    const link = `${baseUrl}/blog/${slug}`;
+    const title = data.title
+    const pubDate = data.date
+    const description = data.description
+    const link = `${baseUrl}/blog/${id}`
 
     return {
       title,
       pubDate,
       description,
       link,
-    };
-  });
+    }
+  })
 
   return rss({
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
     site: baseUrl,
     items: rssItems,
-  });
-};
+  })
+}

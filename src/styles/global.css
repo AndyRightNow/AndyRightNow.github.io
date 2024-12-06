@@ -13,11 +13,11 @@
     /* light theme */
     .theme-bubblegum {
         /* Custom #8AE6FB */
-        --color-primary-blue: 138 230 251;
+        --color-primary-blue: 116 185 255;
         /* Tailwind lime-300 #bef264 */
-        --color-primary-green: 190 242 100;
+        --color-primary-green: 0 184 148;
         /* Custom #FFDE69 */
-        --color-primary-yellow: 255 222 105;
+        --color-primary-yellow: 129 236 236;
 
         /* Custom #3e3355 */
         --color-text-body: 62 51 85;
@@ -52,7 +52,7 @@
         /* Tailwind lime-300 #bef264 */
         --color-primary-green: 190 242 100;
         /* Custom #FFDE69 */
-        --color-primary-yellow: 255 222 105;
+        --color-primary-yellow: 225 112 85;
 
         /* tailwind slate-300 */
         --color-text-body: 203 213 225;

@@ -1,22 +1,21 @@
 ---
 draft: true
 external: false
-title: "Why Tic-Tac-Toe is an Annoyingly Brilliant Front-End Interview Coding Test"
-description: "Why Tic-Tac-Toe is an Annoyingly Brilliant Front-End Interview Coding Test"
-date: 2024-12-06
+title: 'Why Tic-Tac-Toe is an Annoyingly Brilliant Front-End Interview Coding Test'
+description: 'Why Tic-Tac-Toe is an Annoyingly Brilliant Front-End Interview Coding Test'
+ogImagePath: /images/j1z8uxvpysdeige7y5zn.png
+date: 2024-12-11
 ---
 
 I assume we all know what a [Tic-tac-toe game](https://www.google.com/search?q=tic+tac+toe) is, right? If you click the link, you can even play it in the search result and it's beautifully made.
 
-Well, how about implementing it in your favorite front-end frameworks   in **less than 30 minutes** with **variable board size and number to win support**?
+Well, how about implementing it in your favorite front-end frameworks in **less than 30 minutes** with **variable board size and number to win support**?
 
+![Winning sequences in 5 x 5 tic-tac-toe](/images/d25g2cbvcam87oojr8az.png)
 
-![Winning sequences in 5 x 5 tic-tac-toe](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/d25g2cbvcam87oojr8az.png)
+I tried it and timed it and it's not easy.
 
-
-I tried it and timed it and it's not easy. 
-
-What's more, it actually covers more aspects of how well a person can handle requirements, communication, designing and programming than I originally thought. 
+What's more, it actually covers more aspects of how well a person can handle requirements, communication, designing and programming than I originally thought.
 
 Thanks to (or not?) this coding test, I unfortunately have to turn down several candidates who can't even figure out a simple implementation within the time frame.
 
@@ -28,7 +27,7 @@ Let's add more to this principle:
 
 > And whether we want to touch this person's code or not.
 
-Tic-tac-toe shows them all. Well, probably not exactly all but, most of them. Why? 
+Tic-tac-toe shows them all. Well, probably not exactly all but, most of them. Why?
 
 Let's take it step by step from a candidate's perspective.
 
@@ -57,7 +56,6 @@ Using [CodeSandbox](https://codesandbox.io/) or [Stackblitz](https://stackblitz.
 
 In this step, the interviewers would love to see your familiarity with the build tools and the development environment, given that the tool chain for front-end development has evolved to be much more complicated (or simplified) than before.
 
-So yeah, being able to seamlessly bootstrap a local development environment without looking up documentations and StackOverflow would be extremely impressive. However, it's not required so don't try them easily during interviews unless you are 100% sure what you are doing.  It might just come back and bite you.
+So yeah, being able to seamlessly bootstrap a local development environment without looking up documentations and StackOverflow would be extremely impressive. However, it's not required so don't try them easily during interviews unless you are 100% sure what you are doing. It might just come back and bite you.
 
 ### Third, start describing
-

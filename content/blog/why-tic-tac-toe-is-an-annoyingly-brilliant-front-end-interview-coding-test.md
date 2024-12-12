@@ -7,7 +7,7 @@ ogImagePath: /images/j1z8uxvpysdeige7y5zn.png
 date: 2024-12-11
 ---
 
-I assume we all know what a [Tic-tac-toe game](https://www.google.com/search?q=tic+tac+toe) is, right? If you click the link, you can even play it in the search result and it's beautifully made.
+We all know what a [Tic-tac-toe game](https://www.google.com/search?q=tic+tac+toe) is, right? If you click the link, you can even play a nicely made version of it in the search results.
 
 Well, how about implementing it in your favorite front-end frameworks in **less than 30 minutes** with **variable board size and number to win support**?
 
@@ -15,47 +15,28 @@ Well, how about implementing it in your favorite front-end frameworks in **less 
 
 I tried it and timed it and it's not easy.
 
-What's more, it actually covers more aspects of how well a person can handle requirements, communication, designing and programming than I originally thought.
+What's more, it covers more aspects of how well a person can handle requirements, communication, design, and programming than I originally thought.
 
 Thanks to (or not?) this coding test, I unfortunately have to turn down several candidates who can't even figure out a simple implementation within the time frame.
 
 ## What's so good about it?
 
-> When we interview someone, we are evaluating whether we want to work with this person or not.
+> When we interview someone, we evaluate whether we want to work with that person.
 
 Let's add more to this principle:
 
 > And whether we want to touch this person's code or not.
 
-Tic-tac-toe shows them all. Well, probably not exactly all but, most of them. Why?
+Implementing a Tic-tac-toe game shows a surprising amount of technical ability that a capable front-end developer should have to do their job well.
 
-Let's take it step by step from a candidate's perspective.
+On top of that, it's much more practical than a data structure of algorithm coding problems. You probably won't write a Depth-first search that often, but I am sure you will use most of the things used to implement a Tic-tac-toe game.
 
-### First, clarify the requirements
+## What it takes to implement it
 
-When you hear the simple question:
+Knowledge & skills about
 
-> Could you implement a Tic-tac-toe game in any framework of your choice?
-
-If you are experienced enough ~~(completely fed-up)~~ with working overtime to meet the deadline due to unclear requirements and subsequent changes, you'd know it's the right time to ask many more questions.
-
-For example:
-
-- ~~What the hell is a Tic-tac-toe game?~~
-- Does it need to have pretty style?
-- Is it going to be only 3x3? Can users change the size?
-- Is the winning rule the same as the classic Tic-tac-toe?
-- Can I look up documentations and syntaxes during the process?
-- Can I ask AI? (Please, don't do it)
-
-If it's timed, asking questions would only narrow the range and probably save you a lot of time. Also, some interviewers are just blatantly setting it up with an intentionally unclear question, waiting for you to ask more. (I do)
-
-### Second, boot up a starter app and development environment
-
-Using [CodeSandbox](https://codesandbox.io/) or [Stackblitz](https://stackblitz.com/) is completely fine, or even recommended because it cuts unnecessary hassles. If you want to flex your scaffolding skills (I donno if there is one), you can also do it locally.
-
-In this step, the interviewers would love to see your familiarity with the build tools and the development environment, given that the tool chain for front-end development has evolved to be much more complicated (or simplified) than before.
-
-So yeah, being able to seamlessly bootstrap a local development environment without looking up documentations and StackOverflow would be extremely impressive. However, it's not required so don't try them easily during interviews unless you are 100% sure what you are doing. It might just come back and bite you.
-
-### Third, start describing
+1. Build tools and a local development environment
+2. At least one front-end UI library (React, Vue, Svelte, etc.)
+3. Front-end application states
+4. Styling libraries (including vanilla CSS) for basic layout
+5. A clean app architecture

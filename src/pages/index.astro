@@ -34,9 +34,10 @@ import { SITE_TITLE } from '../config'
     <script>
       import * as THREE from 'three'
       import { RapierPhysics } from 'three/addons/physics/RapierPhysics.js'
-      import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
-      import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
-      import helvetikerBold from 'three/examples/fonts/helvetiker_bold.typeface.json'
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
+import helvetikerBold from 'three/examples/fonts/helvetiker_bold.typeface.json'
+import Stats from 'stats.js'
 
       const GROUND_BLUE = '#478bff'
 
@@ -162,9 +163,10 @@ import { SITE_TITLE } from '../config'
       const renderer = new THREE.WebGLRenderer({
         antialias: true,
         canvas,
+        powerPreference: 'high-performance',
       })
       renderer.setClearColor(roomColor, 1)
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
       renderer.shadowMap.enabled = true
       renderer.shadowMap.type = THREE.PCFSoftShadowMap
       renderer.toneMapping = THREE.ACESFilmicToneMapping
@@ -173,26 +175,10 @@ import { SITE_TITLE } from '../config'
       const stage = new THREE.Group()
       scene.add(stage)
 
-      const floorMaterial = new THREE.MeshPhysicalMaterial({
+      const floorMaterial = new THREE.MeshStandardMaterial({
         color: floorColor,
-        opacity: sceneSettings.floorOpacity,
-        transparent: sceneSettings.floorOpacity < 1,
-        wireframe: sceneSettings.floorWireframe,
         roughness: sceneSettings.floorRoughness,
         metalness: sceneSettings.floorMetalness,
-        clearcoat: sceneSettings.floorClearcoat,
-        clearcoatRoughness: sceneSettings.floorClearcoatRoughness,
-        reflectivity: sceneSettings.floorReflectivity,
-        ior: sceneSettings.floorIor,
-        transmission: sceneSettings.floorTransmission,
-        thickness: sceneSettings.floorThickness,
-        sheen: sceneSettings.floorSheen,
-        sheenRoughness: sceneSettings.floorSheenRoughness,
-        sheenColor: new THREE.Color(sceneSettings.floorSheenColor),
-        specularIntensity: sceneSettings.floorSpecularIntensity,
-        specularColor: new THREE.Color(sceneSettings.floorSpecularColor),
-        iridescence: sceneSettings.floorIridescence,
-        iridescenceIOR: sceneSettings.floorIridescenceIOR,
       })
 
       const floor = new THREE.Mesh(new THREE.BoxGeometry(72, 2, 72), floorMaterial)
@@ -208,26 +194,10 @@ import { SITE_TITLE } from '../config'
       )
       scene.add(nameGroup)
 
-      const nameMaterial = new THREE.MeshPhysicalMaterial({
+      const nameMaterial = new THREE.MeshStandardMaterial({
         color: white,
-        opacity: sceneSettings.textOpacity,
-        transparent: sceneSettings.textOpacity < 1,
-        wireframe: sceneSettings.textWireframe,
         roughness: sceneSettings.textRoughness,
         metalness: sceneSettings.textMetalness,
-        clearcoat: sceneSettings.textClearcoat,
-        clearcoatRoughness: sceneSettings.textClearcoatRoughness,
-        reflectivity: sceneSettings.textReflectivity,
-        ior: sceneSettings.textIor,
-        transmission: sceneSettings.textTransmission,
-        thickness: sceneSettings.textThickness,
-        sheen: sceneSettings.textSheen,
-        sheenRoughness: sceneSettings.textSheenRoughness,
-        sheenColor: new THREE.Color(sceneSettings.textSheenColor),
-        specularIntensity: sceneSettings.textSpecularIntensity,
-        specularColor: new THREE.Color(sceneSettings.textSpecularColor),
-        iridescence: sceneSettings.textIridescence,
-        iridescenceIOR: sceneSettings.textIridescenceIOR,
       })
 
       let nameMesh = null
@@ -244,8 +214,8 @@ import { SITE_TITLE } from '../config'
       const keyLight = new THREE.DirectionalLight(sceneSettings.keyColor, sceneSettings.keyIntensity)
       keyLight.position.set(-5, 9, 6)
       keyLight.castShadow = true
-      keyLight.shadow.mapSize.width = 2048
-      keyLight.shadow.mapSize.height = 2048
+      keyLight.shadow.mapSize.width = 1024
+      keyLight.shadow.mapSize.height = 1024
       keyLight.shadow.camera.left = -9
       keyLight.shadow.camera.right = 9
       keyLight.shadow.camera.top = 9
@@ -283,13 +253,12 @@ import { SITE_TITLE } from '../config'
       overheadSpotLight.position.set(0, 9, -0.35)
       overheadSpotLight.target = overheadSpotTarget
       overheadSpotLight.castShadow = true
-      overheadSpotLight.shadow.mapSize.width = 1024
-      overheadSpotLight.shadow.mapSize.height = 1024
+      overheadSpotLight.shadow.mapSize.width = 512
+      overheadSpotLight.shadow.mapSize.height = 512
       overheadSpotLight.shadow.bias = -0.00012
       overheadSpotLight.shadow.normalBias = 0.002
       scene.add(overheadSpotLight)
 
-      const startedAt = performance.now()
       let viewSize = sceneSettings.cameraViewSizeDesktop
       const cameraBasePosition = new THREE.Vector3(8.5, 8.5, 8.5)
       const cameraBaseLookAt = new THREE.Vector3(0, 0.65, 0)
@@ -320,45 +289,15 @@ import { SITE_TITLE } from '../config'
       }
 
       const updateMaterials = () => {
-        floorMaterial.opacity = sceneSettings.floorOpacity
-        floorMaterial.transparent = sceneSettings.floorOpacity < 1
-        floorMaterial.wireframe = sceneSettings.floorWireframe
+        floorMaterial.color.set(sceneSettings.floorColor)
         floorMaterial.roughness = sceneSettings.floorRoughness
         floorMaterial.metalness = sceneSettings.floorMetalness
-        floorMaterial.clearcoat = sceneSettings.floorClearcoat
-        floorMaterial.clearcoatRoughness = sceneSettings.floorClearcoatRoughness
-        floorMaterial.reflectivity = sceneSettings.floorReflectivity
-        floorMaterial.ior = sceneSettings.floorIor
-        floorMaterial.transmission = sceneSettings.floorTransmission
-        floorMaterial.thickness = sceneSettings.floorThickness
-        floorMaterial.sheen = sceneSettings.floorSheen
-        floorMaterial.sheenRoughness = sceneSettings.floorSheenRoughness
-        floorMaterial.sheenColor.set(sceneSettings.floorSheenColor)
-        floorMaterial.specularIntensity = sceneSettings.floorSpecularIntensity
-        floorMaterial.specularColor.set(sceneSettings.floorSpecularColor)
-        floorMaterial.iridescence = sceneSettings.floorIridescence
-        floorMaterial.iridescenceIOR = sceneSettings.floorIridescenceIOR
         floorMaterial.needsUpdate = true
         floor.receiveShadow = sceneSettings.floorReceivesShadow
 
-        nameMaterial.opacity = sceneSettings.textOpacity
-        nameMaterial.transparent = sceneSettings.textOpacity < 1
-        nameMaterial.wireframe = sceneSettings.textWireframe
+        nameMaterial.color.set(sceneSettings.textColor)
         nameMaterial.roughness = sceneSettings.textRoughness
         nameMaterial.metalness = sceneSettings.textMetalness
-        nameMaterial.clearcoat = sceneSettings.textClearcoat
-        nameMaterial.clearcoatRoughness = sceneSettings.textClearcoatRoughness
-        nameMaterial.reflectivity = sceneSettings.textReflectivity
-        nameMaterial.ior = sceneSettings.textIor
-        nameMaterial.transmission = sceneSettings.textTransmission
-        nameMaterial.thickness = sceneSettings.textThickness
-        nameMaterial.sheen = sceneSettings.textSheen
-        nameMaterial.sheenRoughness = sceneSettings.textSheenRoughness
-        nameMaterial.sheenColor.set(sceneSettings.textSheenColor)
-        nameMaterial.specularIntensity = sceneSettings.textSpecularIntensity
-        nameMaterial.specularColor.set(sceneSettings.textSpecularColor)
-        nameMaterial.iridescence = sceneSettings.textIridescence
-        nameMaterial.iridescenceIOR = sceneSettings.textIridescenceIOR
         nameMaterial.needsUpdate = true
 
         if (nameMesh) {
@@ -496,6 +435,7 @@ import { SITE_TITLE } from '../config'
         camera.bottom = -viewSize / 2
         camera.updateProjectionMatrix()
         renderer.setSize(innerWidth, innerHeight, false)
+        requestRender()
       }
 
       const handleWheel = (event) => {
@@ -506,6 +446,7 @@ import { SITE_TITLE } from '../config'
           sceneSettings.scrollForwardMax,
         )
         updateScrollMotion()
+        requestRender()
       }
 
       const handlePointerDown = (event) => {
@@ -540,11 +481,16 @@ import { SITE_TITLE } from '../config'
         const point = { x: hit.point.x, y: hit.point.y, z: hit.point.z }
 
         body.applyImpulseAtPoint(impulse, point, true)
+        requestRender()
       }
 
       const setupLocalControls = async () => {
         const { default: GUI } = await import('lil-gui')
         const { TransformControls } = await import('three/examples/jsm/controls/TransformControls.js')
+
+        statsPanel = new Stats()
+        statsPanel.showPanel(0)
+        document.body.appendChild(statsPanel.dom)
 
         transformControls = new TransformControls(camera, renderer.domElement)
         transformControls.attach(nameGroup)
@@ -846,11 +792,26 @@ import { SITE_TITLE } from '../config'
       }
 
       const syncCustomPhysicsBodies = () => {
-        if (customPhysicsMap.size === 0) return
+        if (customPhysicsMap.size === 0) return false
 
         const worldPos = new THREE.Vector3()
+        let anyMoving = false
+        const velocityThreshold = 0.001
 
         for (const [mesh, { body, centerOffset }] of customPhysicsMap) {
+          const linvel = body.linvel()
+          const angvel = body.angvel()
+          if (
+            Math.abs(linvel.x) > velocityThreshold ||
+            Math.abs(linvel.y) > velocityThreshold ||
+            Math.abs(linvel.z) > velocityThreshold ||
+            Math.abs(angvel.x) > velocityThreshold ||
+            Math.abs(angvel.y) > velocityThreshold ||
+            Math.abs(angvel.z) > velocityThreshold
+          ) {
+            anyMoving = true
+          }
+
           const t = body.translation()
           worldPos.set(t.x - centerOffset.x, t.y - centerOffset.y, t.z - centerOffset.z)
 
@@ -861,6 +822,8 @@ import { SITE_TITLE } from '../config'
           mesh.position.copy(worldPos)
           mesh.quaternion.set(0, 0, 0, 1)
         }
+
+        return anyMoving
       }
 
       const setupPhysics = async () => {
@@ -973,6 +936,17 @@ import { SITE_TITLE } from '../config'
       loadNameText()
       setupPhysics()
 
+      let renderLoopId = null
+      let needsRender = true
+      let startupAnimationDone = false
+      let statsPanel = null
+      const requestRender = () => {
+        needsRender = true
+        if (renderLoopId === null) {
+          renderLoopId = window.requestAnimationFrame(animate)
+        }
+      }
+
       const updateStartupAnimation = (elapsedMs) => {
         if (!sceneReady || startupStartedAt === null) {
           roomLightScale = INITIAL_ROOM_LIGHT_SCALE
@@ -1010,25 +984,52 @@ import { SITE_TITLE } from '../config'
           spotLightScale = 0.25 + easeOutCubic(clamp01((sequenceElapsed - 2.05) / 0.7)) * 0.75
         }
 
+        if (!startupAnimationDone && sequenceElapsed >= 2.75) {
+          startupAnimationDone = true
+        }
+
         updateLighting()
       }
 
       const animate = () => {
         const now = performance.now()
-        const elapsed = (now - startedAt) / 1000
 
-        updateStartupAnimation(now)
+        if (!startupAnimationDone) {
+          updateStartupAnimation(now)
+          needsRender = true
+        }
 
         camera.lookAt(cameraCurrentLookAt)
 
-        syncCustomPhysicsBodies()
+        if (physics) {
+          try {
+            const bodiesInMotion = syncCustomPhysicsBodies()
+            if (bodiesInMotion) {
+              needsRender = true
+            }
+          } catch (_) {
+            // physics sync is best-effort; skip if bodies aren't ready
+          }
+        }
 
-        renderer.render(scene, camera)
-        window.requestAnimationFrame(animate)
+        if (needsRender) {
+          if (statsPanel) statsPanel.begin()
+          renderer.render(scene, camera)
+          if (statsPanel) statsPanel.end()
+        }
+
+        const keepLooping = needsRender || !startupAnimationDone
+
+        if (keepLooping) {
+          needsRender = false
+          renderLoopId = window.requestAnimationFrame(animate)
+        } else {
+          renderLoopId = null
+        }
       }
 
       resize()
-      animate()
+      requestRender()
 
       window.addEventListener('resize', resize)
       window.addEventListener('wheel', handleWheel, { passive: false })

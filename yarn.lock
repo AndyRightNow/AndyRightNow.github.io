@@ -1408,7 +1408,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/stats.js@npm:*":
+"@types/stats.js@npm:*, @types/stats.js@npm:^0.17.4":
   version: 0.17.4
   resolution: "@types/stats.js@npm:0.17.4"
   checksum: 10c0/4fe0429998519f0476f03a25b4900b4d4a1474606478657271e40a884f7936ba902ea564b1c95cfd33a8e84af46cef6e1e98bb23e86fd3b6676cd5b974987151
@@ -1468,6 +1468,7 @@ __metadata:
     "@dimforge/rapier3d-compat": "npm:^0.19.3"
     "@tailwindcss/typography": "npm:^0.5.19"
     "@tailwindcss/vite": "npm:^4.3.0"
+    "@types/stats.js": "npm:^0.17.4"
     "@types/three": "npm:^0.184.1"
     astro: "npm:^6.3.7"
     globby: "npm:^16.2.0"
@@ -1477,6 +1478,7 @@ __metadata:
     prettier-plugin-astro: "npm:^0.14.1"
     prettier-plugin-astro-organize-imports: "npm:^0.4.12"
     slugify: "npm:^1.6.9"
+    stats.js: "npm:^0.17.0"
     tailwindcss: "npm:^4.3.0"
     three: "npm:^0.184.0"
     typescript: "npm:^6.0.3"
@@ -5248,6 +5250,13 @@ __metadata:
   dependencies:
     minipass: "npm:^7.0.3"
   checksum: 10c0/caddd5f544b2006e88fa6b0124d8d7b28208b83c72d7672d5ade44d794525d23b540f3396108c4eb9280dcb7c01f0bef50682f5b4b2c34291f7c5e211fd1417d
+  languageName: node
+  linkType: hard
+
+"stats.js@npm:^0.17.0":
+  version: 0.17.0
+  resolution: "stats.js@npm:0.17.0"
+  checksum: 10c0/03392b4b9eb15cb285b8cf46c5dd68e4e7b556d8e4c72a3a48e6bd2ab6f2e72a02b145d465f594450df081d8f94a45e8ac1112a0d507a200a5768504082ca080
   languageName: node
   linkType: hard
 

@@ -117,7 +117,7 @@ import { SITE_TITLE } from '../config'
         transformControlsShowY: true,
         transformControlsShowZ: true,
         scrollForwardOffset: 0,
-        scrollForwardMin: -5,
+         scrollForwardMin: 0,
         scrollForwardMax: 5,
         clickImpulseStrength: 1.45,
       }
@@ -195,8 +195,8 @@ import { SITE_TITLE } from '../config'
         iridescenceIOR: sceneSettings.floorIridescenceIOR,
       })
 
-      const floor = new THREE.Mesh(new THREE.PlaneGeometry(72, 72), floorMaterial)
-      floor.rotation.x = -Math.PI / 2
+      const floor = new THREE.Mesh(new THREE.BoxGeometry(72, 2, 72), floorMaterial)
+      floor.position.y = -1
       floor.receiveShadow = true
       stage.add(floor)
 
@@ -300,6 +300,7 @@ import { SITE_TITLE } from '../config'
       const raycaster = new THREE.Raycaster()
       const pointer = new THREE.Vector2()
       const physicsMeshes = []
+      const customPhysicsMap = new Map()
       let physics = null
       let lastPhysicsStepAt = performance.now()
 
@@ -405,8 +406,18 @@ import { SITE_TITLE } from '../config'
           return
         }
 
-        body.setTranslation(mesh.position, true)
-        body.setRotation(mesh.quaternion, true)
+        const entry = customPhysicsMap.get(mesh)
+        const centerOffset = entry?.centerOffset
+
+        const worldPos = new THREE.Vector3()
+        mesh.getWorldPosition(worldPos)
+
+        if (centerOffset) {
+          worldPos.add(centerOffset)
+        }
+
+        body.setTranslation({ x: worldPos.x, y: worldPos.y, z: worldPos.z }, true)
+        body.setRotation({ x: 0, y: 0, z: 0, w: 1 }, true)
         body.setLinvel({ x: 0, y: 0, z: 0 }, true)
         body.setAngvel({ x: 0, y: 0, z: 0 }, true)
       }
@@ -506,7 +517,8 @@ import { SITE_TITLE } from '../config'
         pointer.y = -(event.clientY / window.innerHeight) * 2 + 1
         raycaster.setFromCamera(pointer, camera)
 
-        const [hit] = raycaster.intersectObjects(physicsMeshes, false)
+        const hits = raycaster.intersectObjects(physicsMeshes, true)
+        const hit = hits.find((entry) => physicsMeshes.includes(entry.object))
 
         if (!hit) {
           return
@@ -523,9 +535,11 @@ import { SITE_TITLE } from '../config'
           Math.random() * 0.65 + 0.35,
           Math.random() - 0.5,
         ).normalize()
-        const impulse = randomDirection.multiplyScalar(sceneSettings.clickImpulseStrength)
+        const impulseVector = randomDirection.multiplyScalar(sceneSettings.clickImpulseStrength)
+        const impulse = { x: impulseVector.x, y: impulseVector.y, z: impulseVector.z }
+        const point = { x: hit.point.x, y: hit.point.y, z: hit.point.z }
 
-        body.applyImpulseAtPoint(impulse, hit.point, true)
+        body.applyImpulseAtPoint(impulse, point, true)
       }
 
       const setupLocalControls = async () => {
@@ -802,14 +816,65 @@ import { SITE_TITLE } from '../config'
         setupLocalControls()
       }
 
+      const addCustomPhysicsBody = (mesh, mass, restitution) => {
+        mesh.geometry.computeBoundingBox()
+        const bbox = mesh.geometry.boundingBox
+        const cx = (bbox.min.x + bbox.max.x) / 2
+        const cy = (bbox.min.y + bbox.max.y) / 2
+        const cz = (bbox.min.z + bbox.max.z) / 2
+        const sx = Math.max((bbox.max.x - bbox.min.x) / 2 - 0.03, 0.03)
+        const sy = Math.max((bbox.max.y - bbox.min.y) / 2, 0.03)
+        const sz = Math.max((bbox.max.z - bbox.min.z) / 2 - 0.02, 0.03)
+
+        const shape = physics.RAPIER.ColliderDesc.cuboid(sx, sy, sz)
+        shape.setMass(mass)
+        shape.setRestitution(restitution)
+
+        const localCenter = new THREE.Vector3(cx, cy, cz)
+        const worldCenter = localCenter.clone()
+        mesh.localToWorld(worldCenter)
+
+        const bodyDesc = physics.RAPIER.RigidBodyDesc.dynamic()
+        bodyDesc.setTranslation(worldCenter.x, worldCenter.y, worldCenter.z)
+        bodyDesc.setLinearDamping(0.35)
+        bodyDesc.lockRotations()
+        const body = physics.world.createRigidBody(bodyDesc)
+        physics.world.createCollider(shape, body)
+
+        mesh.userData.physics = { mass, restitution, body }
+        customPhysicsMap.set(mesh, { body, centerOffset: localCenter })
+      }
+
+      const syncCustomPhysicsBodies = () => {
+        if (customPhysicsMap.size === 0) return
+
+        const worldPos = new THREE.Vector3()
+
+        for (const [mesh, { body, centerOffset }] of customPhysicsMap) {
+          const t = body.translation()
+          worldPos.set(t.x - centerOffset.x, t.y - centerOffset.y, t.z - centerOffset.z)
+
+          if (mesh.parent) {
+            mesh.parent.worldToLocal(worldPos)
+          }
+
+          mesh.position.copy(worldPos)
+          mesh.quaternion.set(0, 0, 0, 1)
+        }
+      }
+
       const setupPhysics = async () => {
         loadingManager.itemStart('rapier-physics')
         physics = await RapierPhysics()
-        floor.userData.physics = { mass: 0, restitution: 0.15 }
-        physics.addMesh(floor, 0, 0.15)
+
+        const floorShape = physics.RAPIER.ColliderDesc.cuboid(36, 1, 36)
+        const floorBodyDesc = physics.RAPIER.RigidBodyDesc.fixed()
+        floorBodyDesc.setTranslation(0, -1, 0)
+        const floorBody = physics.world.createRigidBody(floorBodyDesc)
+        physics.world.createCollider(floorShape, floorBody)
 
         for (const mesh of physicsMeshes) {
-          physics.addMesh(mesh, 0.8, 0.22)
+          addCustomPhysicsBody(mesh, 0.8, 0.22)
         }
 
         loadingManager.itemEnd('rapier-physics')
@@ -878,7 +943,7 @@ import { SITE_TITLE } from '../config'
 
           if (physics) {
             for (const glyphMesh of glyphMeshes) {
-              physics.addMesh(glyphMesh, 0.8, 0.22)
+              addCustomPhysicsBody(glyphMesh, 0.8, 0.22)
             }
           }
 
@@ -955,6 +1020,8 @@ import { SITE_TITLE } from '../config'
         updateStartupAnimation(now)
 
         camera.lookAt(cameraCurrentLookAt)
+
+        syncCustomPhysicsBodies()
 
         renderer.render(scene, camera)
         window.requestAnimationFrame(animate)

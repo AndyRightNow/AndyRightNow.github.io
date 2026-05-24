@@ -197,6 +197,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@dimforge/rapier3d-compat@npm:^0.19.3":
+  version: 0.19.3
+  resolution: "@dimforge/rapier3d-compat@npm:0.19.3"
+  checksum: 10c0/e056552cbfe07d7036485241b803ee3cb094e178021e27b0e33b2a9c9b1afa9c13e8d6d6825f21e37b75f60fa1ee80640becb5e75040b0245ec2c453b305c679
+  languageName: node
+  linkType: hard
+
 "@dimforge/rapier3d-compat@npm:~0.12.0":
   version: 0.12.0
   resolution: "@dimforge/rapier3d-compat@npm:0.12.0"
@@ -1458,12 +1465,14 @@ __metadata:
     "@astrojs/prism": "npm:^4.0.2"
     "@astrojs/rss": "npm:^4.0.18"
     "@astrojs/sitemap": "npm:^3.7.2"
+    "@dimforge/rapier3d-compat": "npm:^0.19.3"
     "@tailwindcss/typography": "npm:^0.5.19"
     "@tailwindcss/vite": "npm:^4.3.0"
     "@types/three": "npm:^0.184.1"
     astro: "npm:^6.3.7"
     globby: "npm:^16.2.0"
     gray-matter: "npm:^4.0.3"
+    lil-gui: "npm:^0.21.0"
     prettier: "npm:^3.8.3"
     prettier-plugin-astro: "npm:^0.14.1"
     prettier-plugin-astro-organize-imports: "npm:^0.4.12"
@@ -3237,6 +3246,13 @@ __metadata:
     lightningcss-win32-x64-msvc:
       optional: true
   checksum: 10c0/70945bd55097af46fc9fab7f5ed09cd5869d85940a2acab7ee06d0117004a1d68155708a2d462531cea2fc3c67aefc9333a7068c80b0b78dd404c16838809e03
+  languageName: node
+  linkType: hard
+
+"lil-gui@npm:^0.21.0":
+  version: 0.21.0
+  resolution: "lil-gui@npm:0.21.0"
+  checksum: 10c0/195fa247d0179b7a6099c9642ac818bd8090db348d372cb3790e6cb2b99b48e3ce6d7db3a6d429f8ef565c7262229bb86e5d32dfc05e785514a4b1b76d1f95f1
   languageName: node
   linkType: hard
 

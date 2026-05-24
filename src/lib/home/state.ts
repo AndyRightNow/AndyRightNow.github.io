@@ -1,0 +1,28 @@
+import * as THREE from 'three'
+
+export const $ = {
+  nameMesh: null as THREE.Group | null,
+  transformControls: null as any,
+  gui: null as any,
+  physics: null as any,
+  statsPanel: null as any,
+  roomLightScale: 0.035,
+  spotLightScale: 0,
+  sceneReady: false,
+  startupStartedAt: null as number | null,
+  startupAnimationDone: false,
+  needsRender: true,
+  renderLoopId: null as number | null,
+  lastPhysicsStepAt: performance.now(),
+  cameraCurrentLookAt: new THREE.Vector3(0, 0.65, 0),
+  viewSize: 6.2,
+  physicsMeshes: [] as THREE.Mesh[],
+  customPhysicsMap: new Map<THREE.Mesh, { body: any; centerOffset: THREE.Vector3 }>(),
+  transformGuiControllers: [] as any[],
+  hemisphereLight: null as THREE.HemisphereLight | null,
+  keyLight: null as THREE.DirectionalLight | null,
+  fillLight: null as THREE.DirectionalLight | null,
+  accentLight: null as THREE.PointLight | null,
+  overheadSpotLight: null as THREE.SpotLight | null,
+  overheadSpotTarget: null as THREE.Object3D | null,
+}

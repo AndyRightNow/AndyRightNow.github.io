@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config'
 import sitemap from '@astrojs/sitemap'
-import tailwind from '@astrojs/tailwind'
+import tailwindcss from '@tailwindcss/vite'
 
 import mdx from '@astrojs/mdx'
 
@@ -13,11 +13,8 @@ const BASE_URL = (process.env.npm_lifecycle_script || '').includes('astro build'
 export default defineConfig({
   server: { port: SERVER_PORT },
   site: BASE_URL,
-  integrations: [
-    sitemap(),
-    tailwind({
-      config: { applyBaseStyles: false },
-    }),
-    mdx(),
-  ],
+  vite: {
+    plugins: [tailwindcss()],
+  },
+  integrations: [sitemap(), mdx()],
 })

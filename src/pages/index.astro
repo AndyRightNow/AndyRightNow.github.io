@@ -1,15 +1,277 @@
 ---
+import '../styles/global.css'
+
+import Favicon from '../layouts/Favicon.astro'
+import FontAwesome from '../layouts/FontAwesome.astro'
+import GoogleFont from '../layouts/GoogleFont.astro'
+import ThemeScript from '../layouts/ThemeScript.astro'
 import PageMeta from '../components/PageMeta.astro'
-import PageLayout from '../layouts/PageLayout.astro'
-import Intro from '../components/Intro.astro'
 import { SITE_TITLE } from '../config'
-import BlogList from '../components/BlogList.astro'
 ---
 
-<PageLayout>
-  <PageMeta title={SITE_TITLE} slot="meta" />
-  <Fragment slot="main">
-    <Intro />
-    <BlogList />
-  </Fragment>
-</PageLayout>
+<!doctype html>
+<html class="theme-bubblegum" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="generator" content="Astro" />
+    <Favicon />
+    <PageMeta title={SITE_TITLE} />
+    <GoogleFont />
+    <ThemeScript />
+    <FontAwesome />
+  </head>
+  <body>
+    <main class="landing-shell" aria-label="Interactive landing page">
+      <canvas id="landing-canvas" aria-hidden="true"></canvas>
+      <section class="landing-copy">
+        <p class="landing-kicker">Interactive Three.js landing page</p>
+        <h1>Hello, world.</h1>
+        <p class="landing-description">
+          A clean, responsive WebGL foundation for the next version of Andy Zhou's website.
+        </p>
+        <a class="landing-link unset" href="/blog">Read the blog</a>
+      </section>
+    </main>
+
+    <script>
+      import * as THREE from 'three'
+
+      const canvas = document.querySelector('#landing-canvas')
+
+      if (!(canvas instanceof HTMLCanvasElement)) {
+        throw new Error('Landing canvas was not found.')
+      }
+
+      const scene = new THREE.Scene()
+      scene.fog = new THREE.Fog(0x070814, 7, 18)
+
+      const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100)
+      camera.position.set(0, 0.35, 7)
+
+      const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+        canvas,
+      })
+      renderer.setClearColor(0x070814, 1)
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+
+      const group = new THREE.Group()
+      scene.add(group)
+
+      const geometry = new THREE.IcosahedronGeometry(1.45, 8)
+      const material = new THREE.MeshStandardMaterial({
+        color: 0x9fffd0,
+        emissive: 0x12362c,
+        metalness: 0.55,
+        roughness: 0.24,
+        wireframe: true,
+      })
+      const core = new THREE.Mesh(geometry, material)
+      group.add(core)
+
+      const haloGeometry = new THREE.TorusGeometry(2.05, 0.012, 16, 180)
+      const haloMaterial = new THREE.MeshBasicMaterial({ color: 0xffd166 })
+      const halo = new THREE.Mesh(haloGeometry, haloMaterial)
+      halo.rotation.x = Math.PI * 0.5
+      group.add(halo)
+
+      const particlesGeometry = new THREE.BufferGeometry()
+      const particleCount = 900
+      const positions = new Float32Array(particleCount * 3)
+
+      for (let i = 0; i < particleCount; i += 1) {
+        const radius = 4 + Math.random() * 7
+        const theta = Math.random() * Math.PI * 2
+        const phi = Math.acos(2 * Math.random() - 1)
+        const offset = i * 3
+
+        positions[offset] = radius * Math.sin(phi) * Math.cos(theta)
+        positions[offset + 1] = radius * Math.sin(phi) * Math.sin(theta)
+        positions[offset + 2] = radius * Math.cos(phi)
+      }
+
+      particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+      const particlesMaterial = new THREE.PointsMaterial({
+        color: 0x8ab4ff,
+        size: 0.018,
+        transparent: true,
+        opacity: 0.8,
+      })
+      const particles = new THREE.Points(particlesGeometry, particlesMaterial)
+      scene.add(particles)
+
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.75)
+      scene.add(ambientLight)
+
+      const keyLight = new THREE.PointLight(0x9fffd0, 22, 20)
+      keyLight.position.set(3, 4, 5)
+      scene.add(keyLight)
+
+      const fillLight = new THREE.PointLight(0xff6b6b, 8, 18)
+      fillLight.position.set(-5, -2, 3)
+      scene.add(fillLight)
+
+      const pointer = new THREE.Vector2()
+      const startedAt = performance.now()
+
+      const resize = () => {
+        const { innerWidth, innerHeight } = window
+
+        camera.aspect = innerWidth / innerHeight
+        camera.updateProjectionMatrix()
+        renderer.setSize(innerWidth, innerHeight, false)
+      }
+
+      const handlePointerMove = (event) => {
+        pointer.x = (event.clientX / window.innerWidth - 0.5) * 2
+        pointer.y = (event.clientY / window.innerHeight - 0.5) * 2
+      }
+
+      const animate = () => {
+        const elapsed = (performance.now() - startedAt) / 1000
+
+        group.rotation.y = elapsed * 0.28 + pointer.x * 0.22
+        group.rotation.x = Math.sin(elapsed * 0.45) * 0.16 - pointer.y * 0.14
+        halo.rotation.z = elapsed * 0.38
+        particles.rotation.y = elapsed * 0.035
+        particles.rotation.x = pointer.y * 0.05
+
+        camera.position.x += (pointer.x * 0.35 - camera.position.x) * 0.04
+        camera.position.y += (-pointer.y * 0.22 + 0.35 - camera.position.y) * 0.04
+        camera.lookAt(0, 0, 0)
+
+        renderer.render(scene, camera)
+        window.requestAnimationFrame(animate)
+      }
+
+      resize()
+      animate()
+
+      window.addEventListener('resize', resize)
+      window.addEventListener('pointermove', handlePointerMove)
+    </script>
+  </body>
+</html>
+
+<style>
+  :global(html) {
+    background: #070814;
+  }
+
+  body {
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+    background:
+      radial-gradient(circle at 12% 18%, rgb(255 107 107 / 0.22), transparent 32rem),
+      radial-gradient(circle at 82% 22%, rgb(159 255 208 / 0.18), transparent 30rem),
+      linear-gradient(135deg, #070814 0%, #151021 48%, #071a18 100%);
+    color: #f8fbff;
+  }
+
+  .landing-shell {
+    position: relative;
+    display: grid;
+    min-height: 100vh;
+    place-items: center;
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  #landing-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+  }
+
+  .landing-shell::after {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    content: "";
+    background:
+      linear-gradient(90deg, rgb(7 8 20 / 0.72) 0%, rgb(7 8 20 / 0.34) 52%, rgb(7 8 20 / 0.78) 100%),
+      repeating-linear-gradient(
+        90deg,
+        rgb(255 255 255 / 0.035) 0,
+        rgb(255 255 255 / 0.035) 1px,
+        transparent 1px,
+        transparent 96px
+      );
+    pointer-events: none;
+  }
+
+  .landing-copy {
+    width: min(68rem, calc(100vw - 2rem));
+    padding: clamp(2rem, 7vw, 6rem);
+  }
+
+  .landing-kicker {
+    max-width: 42rem;
+    margin: 0 0 1rem;
+    color: #9fffd0;
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    max-width: 11ch;
+    margin: 0;
+    color: #ffffff;
+    font-size: clamp(4rem, 14vw, 10rem);
+    line-height: 0.86;
+    letter-spacing: 0;
+  }
+
+  .landing-description {
+    max-width: 38rem;
+    margin: 1.5rem 0 0;
+    color: rgb(248 251 255 / 0.8);
+    font-size: clamp(1.05rem, 2vw, 1.35rem);
+    line-height: 1.55;
+  }
+
+  .landing-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
+    margin-top: 2rem;
+    border: 1px solid rgb(255 255 255 / 0.22);
+    border-radius: 999px;
+    padding: 0 1.1rem;
+    background: rgb(255 255 255 / 0.1);
+    color: #ffffff;
+    font-weight: 700;
+    line-height: 1;
+    text-decoration: none;
+    backdrop-filter: blur(18px);
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease,
+      transform 160ms ease;
+  }
+
+  .landing-link:hover,
+  .landing-link:focus-visible {
+    border-color: rgb(159 255 208 / 0.7);
+    background: rgb(159 255 208 / 0.16);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 640px) {
+    .landing-copy {
+      align-self: end;
+      padding-bottom: 4rem;
+    }
+
+    h1 {
+      font-size: clamp(3.35rem, 20vw, 5.8rem);
+    }
+  }
+</style>

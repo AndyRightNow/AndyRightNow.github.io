@@ -7,17 +7,9 @@ if (!(canvas instanceof HTMLCanvasElement)) {
   throw new Error('Landing canvas was not found.')
 }
 
-export const loadingScreen = document.querySelector('#loading-screen')
+export const loadingScreen = document.querySelector('#loading-screen') as HTMLDivElement
 
-if (!(loadingScreen instanceof HTMLDivElement)) {
-  throw new Error('Loading screen was not found.')
-}
-
-export const loadingProgress = document.querySelector('#loading-progress')
-
-if (!(loadingProgress instanceof HTMLDivElement)) {
-  throw new Error('Loading progress bar was not found.')
-}
+export const loadingProgress = document.querySelector('#loading-progress') as HTMLDivElement
 
 export const loadingManager = new THREE.LoadingManager()
 
@@ -26,19 +18,16 @@ const floorColor = new THREE.Color(sceneSettings.floorColor)
 const white = new THREE.Color(sceneSettings.textColor)
 
 export const scene = new THREE.Scene()
-scene.background = roomColor
-scene.fog = new THREE.Fog(roomColor, 18, 42)
 
 export const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 100)
 camera.position.set(8.5, 8.5, 8.5)
-camera.lookAt(0, 0.65, 0)
+camera.lookAt(0.517, 0.65, 0)
 
 export const renderer = new THREE.WebGLRenderer({
   antialias: true,
   canvas,
   powerPreference: 'high-performance',
 })
-renderer.setClearColor(roomColor, 1)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
@@ -55,10 +44,11 @@ export const floorMaterial = new THREE.MeshStandardMaterial({
 })
 
 export const floor = new THREE.Mesh(
-  new THREE.BoxGeometry(72, 2, 72),
+  new THREE.PlaneGeometry(24, 200),
   floorMaterial,
 )
-floor.position.y = -1
+floor.rotation.x = -Math.PI / 2
+floor.position.z = 60
 floor.receiveShadow = true
 stage.add(floor)
 
@@ -77,7 +67,9 @@ export const nameMaterial = new THREE.MeshStandardMaterial({
 })
 
 export const cameraBasePosition = new THREE.Vector3(8.5, 8.5, 8.5)
-export const cameraBaseLookAt = new THREE.Vector3(0, 0.65, 0)
+export const cameraBaseLookAt = new THREE.Vector3(0.517, 0.65, 0)
+export const keyLightBasePosition = new THREE.Vector3(-5, 9, 6)
+export const keyLightTargetBasePosition = new THREE.Vector3(0, 0, 0)
 export const spotlightBasePosition = new THREE.Vector3(0, 9, -0.35)
 export const spotlightTargetBasePosition = new THREE.Vector3(0, 0, -0.35)
 export const textForward = new THREE.Vector3(0, 0, 1)

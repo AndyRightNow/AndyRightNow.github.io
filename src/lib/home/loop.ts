@@ -1,9 +1,9 @@
-import * as THREE from 'three'
 import { $ } from './state'
 import { scene, camera, renderer } from './scene'
 import { updateStartupAnimation } from './loading'
 import { updateLighting } from './updaters'
 import { syncCustomPhysicsBodies } from './physics'
+import { updateScrollHint } from './scroll-hint'
 import { debugLog } from '../debug'
 
 export function requestRender() {
@@ -13,8 +13,14 @@ export function requestRender() {
   }
 }
 
-export function animate() {
-  const now = performance.now()
+let lastFrameTs = 0
+
+export function animate(timestamp?: number) {
+  const now = timestamp ?? performance.now()
+  const dt = lastFrameTs ? (now - lastFrameTs) / 1000 : 0.016
+  lastFrameTs = now
+  const renderThisFrame = $.needsRender
+  $.needsRender = false
 
   if (!$.startupAnimationDone) {
     updateStartupAnimation(now)
@@ -45,12 +51,13 @@ export function animate() {
 
   if ($.statsPanel) $.statsPanel.begin()
 
-  if ($.needsRender) {
+  if (renderThisFrame || !$.startupAnimationDone) {
     renderer.render(scene, camera)
   }
 
   if ($.statsPanel) $.statsPanel.end()
 
-  $.needsRender = false
+  updateScrollHint(dt)
+
   $.renderLoopId = window.requestAnimationFrame(animate)
 }

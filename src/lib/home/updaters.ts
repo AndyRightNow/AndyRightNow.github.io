@@ -1,8 +1,8 @@
 import * as THREE from 'three'
 import { sceneSettings } from './settings'
 import { $ } from './state'
+import { debugLog } from '../debug'
 import {
-  scene,
   camera,
   renderer,
   roomColor,
@@ -12,6 +12,8 @@ import {
   nameMaterial,
   cameraBasePosition,
   cameraBaseLookAt,
+  keyLightBasePosition,
+  keyLightTargetBasePosition,
   spotlightBasePosition,
   spotlightTargetBasePosition,
   textForward,
@@ -26,9 +28,6 @@ export function updateSceneColors() {
   roomColor.set(sceneSettings.roomColor)
   floorMaterial.color.set(sceneSettings.floorColor)
   nameMaterial.color.set(sceneSettings.textColor)
-  scene.background = roomColor
-  scene.fog?.color.set(roomColor)
-  renderer.setClearColor(roomColor, 1)
   updateBackground()
 }
 
@@ -81,6 +80,8 @@ export function updateLighting(
 }
 
 export function updateScrollMotion(
+  keyLight: THREE.DirectionalLight,
+  keyLightTarget: THREE.Object3D,
   overheadSpotLight: THREE.SpotLight,
   overheadSpotTarget: THREE.Object3D,
 ) {
@@ -90,8 +91,40 @@ export function updateScrollMotion(
 
   camera.position.copy(cameraBasePosition).add(offset)
   $.cameraCurrentLookAt.copy(cameraBaseLookAt).add(offset)
+  keyLight.position.copy(keyLightBasePosition).add(offset)
+  keyLightTarget.position.copy(keyLightTargetBasePosition).add(offset)
   overheadSpotLight.position.copy(spotlightBasePosition).add(offset)
   overheadSpotTarget.position.copy(spotlightTargetBasePosition).add(offset)
+
+  const cam = keyLight.shadow.camera
+  debugLog('[scroll-motion] key light updated', () => ({
+    scrollOffset: +sceneSettings.scrollForwardOffset.toFixed(2),
+    keyLight: {
+      position: {
+        x: +keyLight.position.x.toFixed(2),
+        y: +keyLight.position.y.toFixed(2),
+        z: +keyLight.position.z.toFixed(2),
+      },
+      target: {
+        x: +keyLightTarget.position.x.toFixed(2),
+        y: +keyLightTarget.position.y.toFixed(2),
+        z: +keyLightTarget.position.z.toFixed(2),
+      },
+      direction: {
+        x: +(keyLightTarget.position.x - keyLight.position.x).toFixed(2),
+        y: +(keyLightTarget.position.y - keyLight.position.y).toFixed(2),
+        z: +(keyLightTarget.position.z - keyLight.position.z).toFixed(2),
+      },
+    },
+    shadowCamera: {
+      left: cam.left,
+      right: cam.right,
+      top: cam.top,
+      bottom: cam.bottom,
+      near: cam.near,
+      far: cam.far,
+    },
+  }))
 }
 
 export function resetPhysicsBodyFromMesh(mesh: THREE.Mesh) {

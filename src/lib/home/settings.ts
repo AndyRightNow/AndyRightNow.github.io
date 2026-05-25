@@ -48,7 +48,7 @@ export const sceneSettings = {
   backgroundAccentColor: '#185ce0',
   toneMappingExposure: 1,
   cameraViewSizeDesktop: 6.2,
-  cameraViewSizeMobile: 9.8,
+  cameraViewSizeMobile: 15.6,
   hemisphereSkyColor: '#8ab9ff',
   hemisphereGroundColor: GROUND_BLUE,
   hemisphereIntensity: 0.79,
@@ -81,8 +81,9 @@ export const sceneSettings = {
   transformControlsShowZ: true,
   scrollForwardOffset: 0,
   scrollForwardMin: 0,
-  scrollForwardMax: 5,
+  scrollForwardMax: 35,
   clickImpulseStrength: 1.45,
+  showColliderDebug: false,
 }
 
 export const initialSceneSettings = structuredClone(sceneSettings)

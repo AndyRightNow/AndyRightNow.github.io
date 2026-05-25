@@ -14,7 +14,9 @@ import {
   updateLighting,
   updateMaterials,
   updateTextTransform,
+  updateScrollMotion,
 } from './updaters'
+import { setupScrollHint } from './scroll-hint'
 import { resize, handleWheel, handlePointerDown } from './events'
 import { requestRender } from './loop'
 import { debugLog } from '../debug'
@@ -47,18 +49,16 @@ setupPhysics()
 debugLog('[init] async loading started (text + physics)')
 
 if (import.meta.env.DEV) {
-  Promise.all([import('./gui'), import('./gui-transform')]).then(
-    ([guiMod, transformMod]) => {
-      guiMod.setupGuiControls().then(({ TransformControls }) => {
-        transformMod.setupTransformControls(TransformControls)
-      })
-    },
-  )
+  import('./gui').then((mod) => mod.setupGuiControls())
+  import('./gui-transform').then((mod) => mod.setupFpsCounter())
 }
 
 resize()
+updateScrollMotion($.keyLight!, $.keyLightTarget!, $.overheadSpotLight!, $.overheadSpotTarget!)
 requestRender()
 
 window.addEventListener('resize', resize)
 window.addEventListener('wheel', handleWheel, { passive: false })
 window.addEventListener('pointerdown', handlePointerDown)
+
+setupScrollHint()

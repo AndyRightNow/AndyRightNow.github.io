@@ -5,13 +5,14 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
+    "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "format": "prettier --config .preitterrc.mjs -w **/*.astro & oxfmt",
     "clean": "rm -rf dist"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.9",
     "@astrojs/mdx": "^5.0.6",
     "@astrojs/prism": "^4.0.2",
     "@astrojs/rss": "^4.0.18",

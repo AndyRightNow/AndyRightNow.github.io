@@ -7,11 +7,16 @@ import {
   updateTextTransform,
   updateTransformControls,
 } from './updaters'
+import { guiAdd } from './gui'
 
-export async function setupTransformControls(TransformControls: any) {
+export function setupFpsCounter() {
   $.statsPanel = new Stats()
   $.statsPanel.showPanel(0)
   document.body.appendChild($.statsPanel.dom)
+}
+
+export async function setupTransformControls(TransformControls: any) {
+  setupFpsCounter()
 
   $.transformControls = new TransformControls(camera, renderer.domElement)
   $.transformControls.attach(nameGroup)
@@ -23,78 +28,95 @@ export async function setupTransformControls(TransformControls: any) {
   updateTransformControls()
 
   const transformFolder = $.gui.addFolder('Text transform')
-  transformFolder
-    .add(sceneSettings, 'transformControlsEnabled')
+  guiAdd(transformFolder, sceneSettings, 'transformControlsEnabled')
     .name('Enabled')
     .onChange(updateTransformControls)
-  transformFolder
-    .add(sceneSettings, 'transformControlsMode', [
-      'translate',
-      'rotate',
-      'scale',
-    ])
+  guiAdd(transformFolder, sceneSettings, 'transformControlsMode', [
+    'translate',
+    'rotate',
+    'scale',
+  ])
     .name('Mode')
     .onChange(updateTransformControls)
-  transformFolder
-    .add(sceneSettings, 'transformControlsSpace', ['world', 'local'])
+  guiAdd(transformFolder, sceneSettings, 'transformControlsSpace', [
+    'world',
+    'local',
+  ])
     .name('Space')
     .onChange(updateTransformControls)
-  transformFolder
-    .add(sceneSettings, 'transformControlsSize', 0.25, 2, 0.01)
+  guiAdd(
+    transformFolder,
+    sceneSettings,
+    'transformControlsSize',
+    0.25,
+    2,
+    0.01,
+  )
     .name('Gizmo size')
     .onChange(updateTransformControls)
-  transformFolder
-    .add(sceneSettings, 'transformControlsShowX')
+  guiAdd(transformFolder, sceneSettings, 'transformControlsShowX')
     .name('Show X')
     .onChange(updateTransformControls)
-  transformFolder
-    .add(sceneSettings, 'transformControlsShowY')
+  guiAdd(transformFolder, sceneSettings, 'transformControlsShowY')
     .name('Show Y')
     .onChange(updateTransformControls)
-  transformFolder
-    .add(sceneSettings, 'transformControlsShowZ')
+  guiAdd(transformFolder, sceneSettings, 'transformControlsShowZ')
     .name('Show Z')
     .onChange(updateTransformControls)
 
   $.transformGuiControllers.push(
-    transformFolder
-      .add(sceneSettings, 'textPositionX', -8, 8, 0.01)
+    guiAdd(transformFolder, sceneSettings, 'textPositionX', -8, 8, 0.01)
       .name('Position X')
       .onChange(updateTextTransform),
   )
   $.transformGuiControllers.push(
-    transformFolder
-      .add(sceneSettings, 'textPositionY', -2, 4, 0.01)
+    guiAdd(transformFolder, sceneSettings, 'textPositionY', -2, 4, 0.01)
       .name('Position Y')
       .onChange(updateTextTransform),
   )
   $.transformGuiControllers.push(
-    transformFolder
-      .add(sceneSettings, 'textPositionZ', -8, 8, 0.01)
+    guiAdd(transformFolder, sceneSettings, 'textPositionZ', -8, 8, 0.01)
       .name('Position Z')
       .onChange(updateTextTransform),
   )
   $.transformGuiControllers.push(
-    transformFolder
-      .add(sceneSettings, 'textRotationX', -Math.PI, Math.PI, 0.01)
+    guiAdd(
+      transformFolder,
+      sceneSettings,
+      'textRotationX',
+      -Math.PI,
+      Math.PI,
+      0.01,
+    )
       .name('Rotation X')
       .onChange(updateTextTransform),
   )
   $.transformGuiControllers.push(
-    transformFolder
-      .add(sceneSettings, 'textRotationY', -Math.PI, Math.PI, 0.01)
+    guiAdd(
+      transformFolder,
+      sceneSettings,
+      'textRotationY',
+      -Math.PI,
+      Math.PI,
+      0.01,
+    )
       .name('Rotation Y')
       .onChange(updateTextTransform),
   )
   $.transformGuiControllers.push(
-    transformFolder
-      .add(sceneSettings, 'textRotationZ', -Math.PI, Math.PI, 0.01)
+    guiAdd(
+      transformFolder,
+      sceneSettings,
+      'textRotationZ',
+      -Math.PI,
+      Math.PI,
+      0.01,
+    )
       .name('Rotation Z')
       .onChange(updateTextTransform),
   )
   $.transformGuiControllers.push(
-    transformFolder
-      .add(sceneSettings, 'textScale', 0.2, 3, 0.01)
+    guiAdd(transformFolder, sceneSettings, 'textScale', 0.2, 3, 0.01)
       .name('Scale')
       .onChange(updateTextTransform),
   )

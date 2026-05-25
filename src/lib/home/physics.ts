@@ -6,7 +6,46 @@ import { debugLog } from '../debug'
 
 const DEV = import.meta.env.DEV
 
-const debugBoxes = new Map<THREE.Mesh, THREE.Mesh>()
+interface DebugBox {
+  mesh: THREE.Mesh
+  body: any
+}
+
+const debugBoxes: DebugBox[] = []
+const debugBoxByHandle = new Map<number, THREE.Mesh>()
+
+export function addColliderDebugBox(
+  body: any,
+  halfExtents: { x: number; y: number; z: number },
+  worldCenter: THREE.Vector3,
+) {
+  const boxGeo = new THREE.BoxGeometry(
+    halfExtents.x * 2,
+    halfExtents.y * 2,
+    halfExtents.z * 2,
+  )
+  const boxMat = new THREE.MeshBasicMaterial({
+    color: 0xff4444,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.5,
+  })
+  const box = new THREE.Mesh(boxGeo, boxMat)
+  box.position.copy(worldCenter)
+  box.renderOrder = 999
+  box.material.depthTest = false
+  box.visible = false
+  scene.add(box)
+  debugBoxes.push({ mesh: box, body })
+  debugBoxByHandle.set(body.handle, box)
+  return box
+}
+
+export function setColliderDebugVisible(visible: boolean) {
+  for (const entry of debugBoxes) {
+    entry.mesh.visible = visible
+  }
+}
 
 export function addCustomPhysicsBody(
   mesh: THREE.Mesh,
@@ -25,7 +64,7 @@ export function addCustomPhysicsBody(
   const worldPos = new THREE.Vector3()
   mesh.getWorldPosition(worldPos)
 
-  debugLog('[physics] addCustomPhysicsBody', {
+  debugLog('[physics] addCustomPhysicsBody', () => ({
     meshPos: {
       x: +mesh.position.x.toFixed(4),
       y: +mesh.position.y.toFixed(4),
@@ -63,7 +102,7 @@ export function addCustomPhysicsBody(
     },
     mass,
     restitution,
-  })
+  }))
 
   const shape = RAPIER.ColliderDesc.cuboid(sx, sy, sz)
   shape.setMass(mass)
@@ -76,7 +115,7 @@ export function addCustomPhysicsBody(
   const bodyDesc = RAPIER.RigidBodyDesc.dynamic()
   bodyDesc.setTranslation(worldCenter.x, worldCenter.y, worldCenter.z)
   bodyDesc.setLinearDamping(0.35)
-  bodyDesc.lockRotations()
+  bodyDesc.setAngularDamping(0.6)
   const body = $.physics.world.createRigidBody(bodyDesc)
   $.physics.world.createCollider(shape, body)
 
@@ -84,25 +123,13 @@ export function addCustomPhysicsBody(
   $.customPhysicsMap.set(mesh, { body, centerOffset: localCenter })
 
   if (DEV) {
-    const boxGeo = new THREE.BoxGeometry(sx * 2, sy * 2, sz * 2)
-    const boxMat = new THREE.MeshBasicMaterial({
-      color: 0xff4444,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.5,
-    })
-    const box = new THREE.Mesh(boxGeo, boxMat)
-    box.position.copy(worldCenter)
-    box.renderOrder = 999
-    box.material.depthTest = false
-    scene.add(box)
-    debugBoxes.set(mesh, box)
+    addColliderDebugBox(body, { x: sx, y: sy, z: sz }, worldCenter)
   }
 
-  debugLog('[physics] body created', {
+  debugLog('[physics] body created', () => ({
     body: !!body,
     customMapSize: $.customPhysicsMap.size,
-  })
+  }))
 }
 
 export function syncCustomPhysicsBodies(): boolean {
@@ -127,10 +154,18 @@ export function syncCustomPhysicsBodies(): boolean {
     }
 
     const t = body.translation()
+    const rot = body.rotation()
+    const offsetWorld = new THREE.Vector3(
+      centerOffset.x,
+      centerOffset.y,
+      centerOffset.z,
+    ).applyQuaternion(
+      new THREE.Quaternion(rot.x, rot.y, rot.z, rot.w),
+    )
     worldPos.set(
-      t.x - centerOffset.x,
-      t.y - centerOffset.y,
-      t.z - centerOffset.z,
+      t.x - offsetWorld.x,
+      t.y - offsetWorld.y,
+      t.z - offsetWorld.z,
     )
 
     if (mesh.parent) {
@@ -138,13 +173,12 @@ export function syncCustomPhysicsBodies(): boolean {
     }
 
     mesh.position.copy(worldPos)
-    mesh.quaternion.set(0, 0, 0, 1)
+    mesh.quaternion.set(rot.x, rot.y, rot.z, rot.w)
 
-    if (DEV) {
-      const box = debugBoxes.get(mesh)
-      if (box) {
-        box.position.set(t.x, t.y, t.z)
-      }
+    const box = debugBoxByHandle.get(body.handle)
+    if (box) {
+      box.position.set(t.x, t.y, t.z)
+      box.quaternion.set(rot.x, rot.y, rot.z, rot.w)
     }
   }
 
@@ -163,14 +197,14 @@ export async function setupPhysics() {
   world.integrationParameters.dt = 1 / 60
 
   $.physics = { RAPIER, world }
-  debugLog('[physics] $.physics set', {
+  debugLog('[physics] $.physics set', () => ({
     hasRAPIER: !!$.physics.RAPIER,
     hasWorld: !!$.physics.world,
-  })
+  }))
 
-  const floorShape = RAPIER.ColliderDesc.cuboid(36, 1, 36)
+  const floorShape = RAPIER.ColliderDesc.cuboid(12, 1, 100)
   const floorBodyDesc = RAPIER.RigidBodyDesc.fixed()
-  floorBodyDesc.setTranslation(0, -1, 0)
+  floorBodyDesc.setTranslation(0, -1, 60)
   const floorBody = world.createRigidBody(floorBodyDesc)
   world.createCollider(floorShape, floorBody)
   debugLog('[physics] floor physics body created')

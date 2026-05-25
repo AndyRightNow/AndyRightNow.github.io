@@ -57,6 +57,13 @@ export function loadNameText() {
       glyphMeshes.push(glyphMesh)
       $.physicsMeshes.push(glyphMesh)
 
+      debugLog('[text] glyph', glyph, {
+        cursorX: +cursorX.toFixed(4),
+        pos: { x: +glyphMesh.position.x.toFixed(4), y: +glyphMesh.position.y.toFixed(4) },
+        bboxMin: { x: +textGeometry.boundingBox.min.x.toFixed(4), y: +textGeometry.boundingBox.min.y.toFixed(4), z: +textGeometry.boundingBox.min.z.toFixed(4) },
+        bboxMax: { x: +textGeometry.boundingBox.max.x.toFixed(4), y: +textGeometry.boundingBox.max.y.toFixed(4), z: +textGeometry.boundingBox.max.z.toFixed(4) },
+      })
+
       cursorX += textGeometry.boundingBox.max.x + 0.08
     }
 

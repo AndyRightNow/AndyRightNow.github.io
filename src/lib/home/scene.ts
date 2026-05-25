@@ -54,7 +54,10 @@ export const floorMaterial = new THREE.MeshStandardMaterial({
   metalness: sceneSettings.floorMetalness,
 })
 
-export const floor = new THREE.Mesh(new THREE.BoxGeometry(72, 2, 72), floorMaterial)
+export const floor = new THREE.Mesh(
+  new THREE.BoxGeometry(72, 2, 72),
+  floorMaterial,
+)
 floor.position.y = -1
 floor.receiveShadow = true
 stage.add(floor)

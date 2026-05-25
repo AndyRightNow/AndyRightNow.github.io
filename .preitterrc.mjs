@@ -11,6 +11,6 @@ export default {
   ],
   singleQuote: true,
   semi: false,
-  trailingComma: true,
+  trailingComma: 'all',
   astroOrganizeImportsMode: 'All',
 }

@@ -62,7 +62,8 @@ export function updateLighting(
 ) {
   hemisphereLight.color.set(sceneSettings.hemisphereSkyColor)
   hemisphereLight.groundColor.set(sceneSettings.hemisphereGroundColor)
-  hemisphereLight.intensity = sceneSettings.hemisphereIntensity * $.roomLightScale
+  hemisphereLight.intensity =
+    sceneSettings.hemisphereIntensity * $.roomLightScale
   keyLight.color.set(sceneSettings.keyColor)
   keyLight.intensity = sceneSettings.keyIntensity * $.roomLightScale
   fillLight.color.set(sceneSettings.fillColor)
@@ -83,7 +84,9 @@ export function updateScrollMotion(
   overheadSpotLight: THREE.SpotLight,
   overheadSpotTarget: THREE.Object3D,
 ) {
-  const offset = textForward.clone().multiplyScalar(sceneSettings.scrollForwardOffset)
+  const offset = textForward
+    .clone()
+    .multiplyScalar(sceneSettings.scrollForwardOffset)
 
   camera.position.copy(cameraBasePosition).add(offset)
   $.cameraCurrentLookAt.copy(cameraBaseLookAt).add(offset)
@@ -155,4 +158,3 @@ export function updateTransformControls() {
   $.transformControls.showY = sceneSettings.transformControlsShowY
   $.transformControls.showZ = sceneSettings.transformControlsShowZ
 }
-

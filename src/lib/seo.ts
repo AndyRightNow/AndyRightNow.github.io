@@ -74,7 +74,9 @@ export function getPageMeta({
     throw Error('title is required for page SEO')
   }
   if (ogImageAbsoluteUrl) {
-    ogImageAltText = !ogImageAltText ? `Preview image for ${pageTitle}` : ogImageAltText
+    ogImageAltText = !ogImageAltText
+      ? `Preview image for ${pageTitle}`
+      : ogImageAltText
     // ogImageWidth = !ogImageWidth ? 1200 : ogImageWidth;
     // ogImageHeight = !ogImageHeight ? 627 : ogImageHeight;
   }
@@ -137,7 +139,11 @@ export function getBlogPostMeta({
   ogImageHeight,
   siteOwnerTwitterHandle,
   contentAuthorTwitterHandle,
-}: SEOBlogPostMetaOptions): { meta: PageMeta; og: BlogPostOgMeta; twitter: BlogPostTwitterMeta } {
+}: SEOBlogPostMetaOptions): {
+  meta: PageMeta
+  og: BlogPostOgMeta
+  twitter: BlogPostTwitterMeta
+} {
   if (!pageTitle) {
     throw Error('title is required for page SEO')
   }

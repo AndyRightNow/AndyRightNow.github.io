@@ -38,7 +38,8 @@ export function updateStartupAnimation(elapsedMs: number): void {
   const sequenceElapsed = Math.max(startupElapsed - DIM_ROOM_HOLD_SECONDS, 0)
   $.roomLightScale =
     INITIAL_ROOM_LIGHT_SCALE +
-    easeOutCubic(clamp01(sequenceElapsed / 0.75)) * (1 - INITIAL_ROOM_LIGHT_SCALE)
+    easeOutCubic(clamp01(sequenceElapsed / 0.75)) *
+      (1 - INITIAL_ROOM_LIGHT_SCALE)
 
   if (sequenceElapsed < 1.05) {
     $.spotLightScale = 0
@@ -60,7 +61,8 @@ export function updateStartupAnimation(elapsedMs: number): void {
       }
     }
   } else {
-    $.spotLightScale = 0.25 + easeOutCubic(clamp01((sequenceElapsed - 2.05) / 0.7)) * 0.75
+    $.spotLightScale =
+      0.25 + easeOutCubic(clamp01((sequenceElapsed - 2.05) / 0.7)) * 0.75
   }
 
   if (!$.startupAnimationDone && sequenceElapsed >= 2.75) {

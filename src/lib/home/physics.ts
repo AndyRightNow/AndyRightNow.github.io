@@ -26,13 +26,41 @@ export function addCustomPhysicsBody(
   mesh.getWorldPosition(worldPos)
 
   debugLog('[physics] addCustomPhysicsBody', {
-    meshPos: { x: +mesh.position.x.toFixed(4), y: +mesh.position.y.toFixed(4), z: +mesh.position.z.toFixed(4) },
-    worldPos: { x: +worldPos.x.toFixed(4), y: +worldPos.y.toFixed(4), z: +worldPos.z.toFixed(4) },
-    bboxMin: { x: +bbox.min.x.toFixed(4), y: +bbox.min.y.toFixed(4), z: +bbox.min.z.toFixed(4) },
-    bboxMax: { x: +bbox.max.x.toFixed(4), y: +bbox.max.y.toFixed(4), z: +bbox.max.z.toFixed(4) },
-    bboxSize: { x: +(bbox.max.x - bbox.min.x).toFixed(4), y: +(bbox.max.y - bbox.min.y).toFixed(4), z: +(bbox.max.z - bbox.min.z).toFixed(4) },
-    colliderHalfExtents: { sx: +sx.toFixed(4), sy: +sy.toFixed(4), sz: +sz.toFixed(4) },
-    colliderCenter: { cx: +cx.toFixed(4), cy: +cy.toFixed(4), cz: +cz.toFixed(4) },
+    meshPos: {
+      x: +mesh.position.x.toFixed(4),
+      y: +mesh.position.y.toFixed(4),
+      z: +mesh.position.z.toFixed(4),
+    },
+    worldPos: {
+      x: +worldPos.x.toFixed(4),
+      y: +worldPos.y.toFixed(4),
+      z: +worldPos.z.toFixed(4),
+    },
+    bboxMin: {
+      x: +bbox.min.x.toFixed(4),
+      y: +bbox.min.y.toFixed(4),
+      z: +bbox.min.z.toFixed(4),
+    },
+    bboxMax: {
+      x: +bbox.max.x.toFixed(4),
+      y: +bbox.max.y.toFixed(4),
+      z: +bbox.max.z.toFixed(4),
+    },
+    bboxSize: {
+      x: +(bbox.max.x - bbox.min.x).toFixed(4),
+      y: +(bbox.max.y - bbox.min.y).toFixed(4),
+      z: +(bbox.max.z - bbox.min.z).toFixed(4),
+    },
+    colliderHalfExtents: {
+      sx: +sx.toFixed(4),
+      sy: +sy.toFixed(4),
+      sz: +sz.toFixed(4),
+    },
+    colliderCenter: {
+      cx: +cx.toFixed(4),
+      cy: +cy.toFixed(4),
+      cz: +cz.toFixed(4),
+    },
     mass,
     restitution,
   })
@@ -57,7 +85,12 @@ export function addCustomPhysicsBody(
 
   if (DEV) {
     const boxGeo = new THREE.BoxGeometry(sx * 2, sy * 2, sz * 2)
-    const boxMat = new THREE.MeshBasicMaterial({ color: 0xff4444, wireframe: true, transparent: true, opacity: 0.5 })
+    const boxMat = new THREE.MeshBasicMaterial({
+      color: 0xff4444,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.5,
+    })
     const box = new THREE.Mesh(boxGeo, boxMat)
     box.position.copy(worldCenter)
     box.renderOrder = 999
@@ -66,7 +99,10 @@ export function addCustomPhysicsBody(
     debugBoxes.set(mesh, box)
   }
 
-  debugLog('[physics] body created', { body: !!body, customMapSize: $.customPhysicsMap.size })
+  debugLog('[physics] body created', {
+    body: !!body,
+    customMapSize: $.customPhysicsMap.size,
+  })
 }
 
 export function syncCustomPhysicsBodies(): boolean {
@@ -91,7 +127,11 @@ export function syncCustomPhysicsBodies(): boolean {
     }
 
     const t = body.translation()
-    worldPos.set(t.x - centerOffset.x, t.y - centerOffset.y, t.z - centerOffset.z)
+    worldPos.set(
+      t.x - centerOffset.x,
+      t.y - centerOffset.y,
+      t.z - centerOffset.z,
+    )
 
     if (mesh.parent) {
       mesh.parent.worldToLocal(worldPos)
@@ -123,7 +163,10 @@ export async function setupPhysics() {
   world.integrationParameters.dt = 1 / 60
 
   $.physics = { RAPIER, world }
-  debugLog('[physics] $.physics set', { hasRAPIER: !!$.physics.RAPIER, hasWorld: !!$.physics.world })
+  debugLog('[physics] $.physics set', {
+    hasRAPIER: !!$.physics.RAPIER,
+    hasWorld: !!$.physics.world,
+  })
 
   const floorShape = RAPIER.ColliderDesc.cuboid(36, 1, 36)
   const floorBodyDesc = RAPIER.RigidBodyDesc.fixed()
@@ -132,7 +175,11 @@ export async function setupPhysics() {
   world.createCollider(floorShape, floorBody)
   debugLog('[physics] floor physics body created')
 
-  debugLog('[physics] adding bodies for', $.physicsMeshes.length, 'existing meshes')
+  debugLog(
+    '[physics] adding bodies for',
+    $.physicsMeshes.length,
+    'existing meshes',
+  )
   for (const mesh of $.physicsMeshes) {
     addCustomPhysicsBody(mesh, 0.8, 0.22)
   }

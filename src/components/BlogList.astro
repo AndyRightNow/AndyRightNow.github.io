@@ -5,17 +5,22 @@ const posts = await getCollection('blog')
 
 const sortedPosts = posts
   .filter((p) => p.data.draft !== true)
-  .sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf())
+  .sort(
+    (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf(),
+  )
 ---
 
 <ul>
   {
     sortedPosts.map((post) => {
-      const formattedDate = new Date(post.data.date).toLocaleDateString('en-us', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      })
+      const formattedDate = new Date(post.data.date).toLocaleDateString(
+        'en-us',
+        {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        },
+      )
 
       return (
         <li class="grid grid-cols-[1fr] md:grid-cols-[1fr_auto] mb-3 md:gap-2 items-start">

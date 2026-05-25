@@ -2,13 +2,13 @@
   "name": "AndyRightNow.github.io",
   "version": "2.0.0",
   "private": true,
-  "packageManager": "yarn@4.5.3",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "format": "prettier --config .preitterrc.mjs -w **/*.astro & oxfmt",
     "clean": "rm -rf dist"
   },
   "dependencies": {
@@ -31,11 +31,13 @@
     "@types/stats.js": "^0.17.4",
     "@types/three": "^0.184.1",
     "lil-gui": "^0.21.0",
+    "oxfmt": "^0.51.0",
     "prettier": "^3.8.3",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-astro-organize-imports": "^0.4.12",
     "stats.js": "^0.17.0",
     "typescript": "^6.0.3",
     "vite": "^7.3.3"
-  }
+  },
+  "packageManager": "yarn@4.5.3"
 }

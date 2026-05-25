@@ -17,7 +17,10 @@ export const $ = {
   cameraCurrentLookAt: new THREE.Vector3(0, 0.65, 0),
   viewSize: 6.2,
   physicsMeshes: [] as THREE.Mesh[],
-  customPhysicsMap: new Map<THREE.Mesh, { body: any; centerOffset: THREE.Vector3 }>(),
+  customPhysicsMap: new Map<
+    THREE.Mesh,
+    { body: any; centerOffset: THREE.Vector3 }
+  >(),
   transformGuiControllers: [] as any[],
   hemisphereLight: null as THREE.HemisphereLight | null,
   keyLight: null as THREE.DirectionalLight | null,

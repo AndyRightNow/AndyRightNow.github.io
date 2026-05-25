@@ -1,0 +1,8 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "ignorePatterns": ["**/*.astro"],
+  "singleQuote": true,
+  "trailingComma": "all",
+  "semi": false,
+  "printWidth": 80
+}

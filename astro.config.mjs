@@ -6,7 +6,9 @@ import mdx from '@astrojs/mdx'
 
 const SERVER_PORT = 3000
 
-const BASE_URL = (process.env.npm_lifecycle_script || '').includes('astro build')
+const BASE_URL = (process.env.npm_lifecycle_script || '').includes(
+  'astro build',
+)
   ? 'https://andyrightnow.github.io'
   : `http://localhost:${SERVER_PORT}`
 

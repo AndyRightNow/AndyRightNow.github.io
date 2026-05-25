@@ -7,7 +7,10 @@ export const GET = async () => {
 
   const sortedPosts = posts
     .filter((p) => p.data.draft !== true)
-    .sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf())
+    .sort(
+      (a, b) =>
+        new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf(),
+    )
 
   let baseUrl = SITE_URL
   // removing trailing slash if found

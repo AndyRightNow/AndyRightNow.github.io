@@ -14,7 +14,10 @@ export function createHemisphereLight() {
 }
 
 export function createKeyLight() {
-  const light = new THREE.DirectionalLight(sceneSettings.keyColor, sceneSettings.keyIntensity)
+  const light = new THREE.DirectionalLight(
+    sceneSettings.keyColor,
+    sceneSettings.keyIntensity,
+  )
   light.position.set(-5, 9, 6)
   light.castShadow = true
   light.shadow.mapSize.width = 1024
@@ -32,7 +35,10 @@ export function createKeyLight() {
 }
 
 export function createFillLight() {
-  const light = new THREE.DirectionalLight(sceneSettings.fillColor, sceneSettings.fillIntensity)
+  const light = new THREE.DirectionalLight(
+    sceneSettings.fillColor,
+    sceneSettings.fillIntensity,
+  )
   light.position.set(7, 5, -4)
   scene.add(light)
   $.fillLight = light

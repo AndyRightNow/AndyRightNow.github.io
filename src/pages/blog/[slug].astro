@@ -1,8 +1,8 @@
 ---
+import { getCollection, getEntry, render } from 'astro:content'
 import BlogPostMeta from '../../components/BlogPostMeta.astro'
-import ContentLayout from '../../layouts/ContentLayout.astro'
 import { SITE_URL } from '../../config'
-import { getEntry, getCollection, render } from 'astro:content'
+import ContentLayout from '../../layouts/ContentLayout.astro'
 
 export async function getStaticPaths() {
   const blogPosts = await getCollection('blog', ({ data }) => {
@@ -40,7 +40,9 @@ const ogImageAbsoluteUrl =
 >
   <BlogPostMeta
     title={entry?.data.title}
-    description={entry?.data && 'description' in entry?.data ? entry?.data.description : undefined}
+    description={entry?.data && 'description' in entry?.data
+      ? entry?.data.description
+      : undefined}
     publishDate={entry?.data.date.toISOString()}
     pagePath={`/blog/${slug}`}
     ogImageAbsoluteUrl={ogImageAbsoluteUrl as string}

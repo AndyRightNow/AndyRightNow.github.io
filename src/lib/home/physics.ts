@@ -64,6 +64,9 @@ export function addCustomPhysicsBody(
   const worldPos = new THREE.Vector3()
   mesh.getWorldPosition(worldPos)
 
+  const worldQuat = new THREE.Quaternion()
+  mesh.getWorldQuaternion(worldQuat)
+
   debugLog('[physics] addCustomPhysicsBody', () => ({
     meshPos: {
       x: +mesh.position.x.toFixed(4),
@@ -74,6 +77,12 @@ export function addCustomPhysicsBody(
       x: +worldPos.x.toFixed(4),
       y: +worldPos.y.toFixed(4),
       z: +worldPos.z.toFixed(4),
+    },
+    worldQuat: {
+      x: +worldQuat.x.toFixed(4),
+      y: +worldQuat.y.toFixed(4),
+      z: +worldQuat.z.toFixed(4),
+      w: +worldQuat.w.toFixed(4),
     },
     bboxMin: {
       x: +bbox.min.x.toFixed(4),
@@ -117,6 +126,10 @@ export function addCustomPhysicsBody(
   bodyDesc.setLinearDamping(0.35)
   bodyDesc.setAngularDamping(0.6)
   const body = $.physics.world.createRigidBody(bodyDesc)
+  body.setRotation(
+    { x: worldQuat.x, y: worldQuat.y, z: worldQuat.z, w: worldQuat.w },
+    true,
+  )
   $.physics.world.createCollider(shape, body)
 
   mesh.userData.physics = { mass, restitution, body }
@@ -155,13 +168,12 @@ export function syncCustomPhysicsBodies(): boolean {
 
     const t = body.translation()
     const rot = body.rotation()
+    const bodyQuat = new THREE.Quaternion(rot.x, rot.y, rot.z, rot.w)
     const offsetWorld = new THREE.Vector3(
       centerOffset.x,
       centerOffset.y,
       centerOffset.z,
-    ).applyQuaternion(
-      new THREE.Quaternion(rot.x, rot.y, rot.z, rot.w),
-    )
+    ).applyQuaternion(bodyQuat)
     worldPos.set(
       t.x - offsetWorld.x,
       t.y - offsetWorld.y,
@@ -170,10 +182,32 @@ export function syncCustomPhysicsBodies(): boolean {
 
     if (mesh.parent) {
       mesh.parent.worldToLocal(worldPos)
+      const parentQuat = new THREE.Quaternion()
+      mesh.parent.getWorldQuaternion(parentQuat)
+      mesh.quaternion.copy(parentQuat.clone().invert().multiply(bodyQuat))
+    } else {
+      mesh.quaternion.copy(bodyQuat)
     }
 
     mesh.position.copy(worldPos)
-    mesh.quaternion.set(rot.x, rot.y, rot.z, rot.w)
+
+    debugLog('[physics] sync body', () => ({
+      meshName: mesh.name || mesh.uuid.slice(0, 8),
+      hasParent: !!mesh.parent,
+      body: {
+        translation: { x: +t.x.toFixed(3), y: +t.y.toFixed(3), z: +t.z.toFixed(3) },
+        quat: { x: +rot.x.toFixed(4), y: +rot.y.toFixed(4), z: +rot.z.toFixed(4), w: +rot.w.toFixed(4) },
+      },
+      centerOffset: { x: +centerOffset.x.toFixed(4), y: +centerOffset.y.toFixed(4), z: +centerOffset.z.toFixed(4) },
+      offsetWorld: { x: +offsetWorld.x.toFixed(4), y: +offsetWorld.y.toFixed(4), z: +offsetWorld.z.toFixed(4) },
+      meshLocalPos: { x: +mesh.position.x.toFixed(3), y: +mesh.position.y.toFixed(3), z: +mesh.position.z.toFixed(3) },
+      meshLocalQuat: {
+        x: +mesh.quaternion.x.toFixed(4),
+        y: +mesh.quaternion.y.toFixed(4),
+        z: +mesh.quaternion.z.toFixed(4),
+        w: +mesh.quaternion.w.toFixed(4),
+      },
+    }))
 
     const box = debugBoxByHandle.get(body.handle)
     if (box) {

@@ -3,7 +3,7 @@ import { $ } from './state'
 import { scene } from './scene'
 import { addCustomPhysicsBody } from './physics'
 import { debugLog } from '../debug'
-import { debugFlags } from './debug-panel'
+import { debugFlags, spawnRangeSettings } from './debug-panel'
 import { PLATE_DEFAULTS } from './content-config'
 import type { ContentObjectConfig } from './content-config'
 
@@ -72,16 +72,16 @@ export function createPlateMesh(config: ContentObjectConfig): THREE.Group {
   group.add(mesh)
 
   const p = config.position
-  const spawn = config.spawn ?? {
-    heightAbove: 11,
-    jitterX: 2,
-    jitterY: 2,
-    jitterZ: 2,
-  }
+  const spawn = config.spawn ?? spawnRangeSettings
   group.position.set(
     p.x + rand(spawn.jitterX),
     p.y + spawn.heightAbove + rand(spawn.jitterY),
     p.z + rand(spawn.jitterZ),
+  )
+  group.rotation.set(
+    rand(Math.PI),
+    rand(Math.PI),
+    rand(Math.PI),
   )
 
   scene.add(group)
